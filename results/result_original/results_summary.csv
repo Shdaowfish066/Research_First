@@ -1,0 +1,7 @@
+Model,Source,Accuracy (%),Precision (%),Recall (%),F1 Score (%)
+LSTM1_LeakyReLU_Tanh,Ours,87.54,85.23,90.82,87.94
+LSTM2_ELU_Tanh,Ours,86.0,88.63,82.6,85.51
+LSTM3_ReLU_ELU,Ours,86.88,87.33,86.28,86.8
+LSTM1_LeakyReLU_Tanh,Paper,88.3,86.1,91.7,88.8
+LSTM2_ELU_Tanh,Paper,88.3,88.7,88.0,88.3
+LSTM3_ReLU_ELU,Paper,88.4,90.3,86.3,88.3

@@ -1,0 +1,7 @@
+Model,Source,Accuracy (%),Precision (%),Recall (%),F1 (%)
+LSTM1_LeakyReLU_Tanh,Paper,88.3,86.1,91.7,88.8
+LSTM2_ELU_Tanh,Paper,88.3,88.7,88.0,88.3
+LSTM3_ReLU_ELU,Paper,88.4,90.3,86.3,88.3
+ExpA_BiLSTM_SelfAttention,Ours (Experimental),90.2,90.79,89.48,90.13
+ExpB_CNN_BiLSTM_Attention,Ours (Experimental),88.97,89.63,88.14,88.88
+ExpC_StackedBiLSTM_MultiHeadAttn,Ours (Experimental),90.15,89.84,90.54,90.19
