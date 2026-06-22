@@ -1,0 +1,4 @@
+Architecture,iso_mean,iso_std,iso_max,combo_mean,combo_std,combo_max,combo_minus_iso,winner_on_mean,welch_t,p_value,significant_0.05,best_isolated,best_combination,best_overall
+GRU,87.483,0.163,87.79,87.425,0.465,88.05,-0.058,Isolated,-0.811,0.4238,no,Mish (87.79%),LeakyReLU+Tanh (88.05%),LeakyReLU+Tanh (88.05%)
+BiGRU,87.29,0.543,87.89,87.3,0.419,88.06,0.01,Combination,0.054,0.9581,no,SiLU (87.89%),Tanh+Hardswish (88.06%),Tanh+Hardswish (88.06%)
+BiLSTM,86.715,0.571,87.37,86.797,0.508,87.82,0.082,Combination,0.437,0.6706,no,ELU (87.37%),Tanh+GELU (87.82%),Tanh+GELU (87.82%)
