@@ -1,0 +1,79 @@
+﻿This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex.fmt)
+ restricted \write18 enabled.
+entering extended mode
+(PID_Response.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.
+sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.st
+y)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty)
+)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.
+cfg))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\times.sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color
+.cfg)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdfte
+x.def)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor
+.ltx))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/parskip\parskip.st
+y
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoption
+s.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkey
+s.sty))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.
+sty))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1ptm.fd)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backen
+d-pdftex.def) (PID_Response.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-p
+df.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd)
+
+Overfull \hbox (41.06729pt too wide) in paragraph at lines 63--68
+[]\T1/ptm/m/n/10 Every con-fig-u-ra-tion was re-trained un-der five seeds $\OMS
+/cmsy/m/n/10 f\OT1/cmr/m/n/10 10\OML/cmm/m/it/10 ; \OT1/cmr/m/n/10 20\OML/cmm/m
+/it/10 ; \OT1/cmr/m/n/10 30\OML/cmm/m/it/10 ; \OT1/cmr/m/n/10 40\OML/cmm/m/it/1
+0 ; \OT1/cmr/m/n/10 50\OMS/cmsy/m/n/10 g$ \T1/ptm/m/n/10 with the data split he
+ld fixed at \T1/pcr/m/n/10 random_state=42\T1/ptm/m/n/10 ,
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd)
+[1{C:/Users/Windows 11/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Use
+rs/Windows 11/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}]
+[2]
+Overfull \hbox (39.997pt too wide) in paragraph at lines 241--243
+[]\T1/ptm/b/n/10 Table IV row la-bels were cor-rupted \T1/ptm/m/n/10 in the sub
+-mit-ted source (``BiL-STM+BiLSTM+LSTM'', ``Bi-GRU+BiGRU+GRU'').
+[3] (PID_Response.aux) )
+(see the transcript file for additional information)<C:/Users/Windows 11/AppDat
+a/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Win
+dows 11/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb>
+<C:/Users/Windows 11/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
+cm/cmr7.pfb><C:/Users/Windows 11/AppData/Local/Programs/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmsy10.pfb><C:/Users/Windows 11/AppData/Local/Programs/MiKTeX/fo
+nts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Windows 11/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/Windows 11/AppData/Loca
+l/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/Windows 11/AppData
+/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/Windows 11/Ap
+pData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on PID_Response.pdf (3 pages, 124791 bytes).
+Transcript written on PID_Response.log.

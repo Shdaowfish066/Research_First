@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+  \caption{Variance Decomposition of Test Accuracy (2{,}000 Runs)}
+  \label{tab:variance}
+  \centering\footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabular}{lr}
+    \toprule
+    Source of variation & \% of total variance \\
+    \midrule
+    Architecture (4 levels) & 26.69 \\
+    \quad cell type (GRU vs.\ LSTM) & 26.32 \\
+    \quad layer-2 bidirectionality & 0.19 \\
+    Act$_1$ (10 levels) & 0.53 \\
+    Act$_2$ (10 levels) & 0.55 \\
+    Act$_1\times$Act$_2$ pair (100 levels) & 3.74 \\
+    \midrule
+    \textbf{Seed (residual)} & \textbf{58.67} \\
+    \bottomrule
+  \end{tabular}
+\end{table}

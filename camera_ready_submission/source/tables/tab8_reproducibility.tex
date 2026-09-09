@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+  \caption{Agreement Between the Single-Seed Ranking and the 5-Seed Means}
+  \label{tab:reproducibility}
+  \centering\footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.1}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lcccc}
+    \toprule
+    Experiment & $\rho$ & Mean rank $\Delta$ & Top-10 overlap & Mean $|\Delta$acc$|$ \\
+    \midrule
+    BiLSTM+LSTM & $-0.174$ & 36.9 & 0/10 & 0.53 \\
+    BiGRU+GRU & $-0.059$ & 34.5 & 1/10 & 0.34 \\
+    BiLSTM+BiLSTM & $-0.041$ & 34.4 & 1/10 & 0.45 \\
+    BiGRU+BiGRU & $+0.055$ & 32.1 & 0/10 & 0.36 \\
+    \bottomrule
+    \multicolumn{5}{l}{\small $\rho$ is the Spearman correlation between the 100 single-seed cell} \\
+    \multicolumn{5}{l}{\small accuracies and the corresponding 5-seed means. $\rho\!\approx\!0$ in all four.} \\
+  \end{tabular}%
+  }
+\end{table}

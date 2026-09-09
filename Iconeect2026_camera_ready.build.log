@@ -1,0 +1,190 @@
+﻿This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex.fmt)
+ restricted \write18 enabled.
+entering extended mode
+(Iconeect2026_camera_ready.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/ieeetran\IEEEtran.
+cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd)
+-- Using 210mm x 297mm (a4) paper.
+-- Using PDF output.
+-- This is a 10 point document.
+)
+** ATTENTION: Overriding command lockouts (line 2).
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1ptm.fd))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/cite\cite.sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.st
+y
+For additional information on amsmath, use the `?' option.
+
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.st
+y
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.s
+ty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.
+sty))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/algorithms\algorit
+hmic.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.st
+y))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.
+sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.
+sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty)
+
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graph
+ics.cfg)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdfte
+x.def)))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/base\textcomp.sty)
+ (C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color
+.cfg)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor
+.ltx))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtyp
+e.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtyp
+e-pdftex.def)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtyp
+e.cfg))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/placeins\placeins.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/fancyhdr\fancyhdr.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.
+sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty)
+
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkey
+s.sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvd
+efinekeys.sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfesc
+ape.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdfte
+xcmds.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwar
+err.sty)))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.st
+y)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.s
+ty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\g
+ettitlestring.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoption
+s.sty)))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\string
+enc.sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.de
+f)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.
+sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
+) (C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.st
+y
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigin
+tcalc.sty)))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.d
+ef
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rer
+unfilecheck.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\un
+iquecounter.sty)))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backen
+d-pdftex.def) (Iconeect2026_camera_ready.aux)
+-- Lines per column: 56 (exact).
+
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-p
+df.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epsto
+pdf-base.sty
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-
+sys.cfg))
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-ptm.c
+fg) (Iconeect2026_camera_ready.out) (Iconeect2026_camera_ready.out)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-cmr.c
+fg)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.c
+fg)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd)
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msb.c
+fg)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 18.05034pt, for example:
+(fancyhdr)                \setlength{\headheight}{18.05034pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-6.05034pt}.
+
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd)
+[1{C:/Users/Windows 11/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Use
+rs/Windows 11/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}]
+(C:\Users\Windows 11\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd)
+[2] (tables/tab5_variance.tex) [3] (tables/tab6_top10.tex)
+(tables/tab8_reproducibility.tex) (tables/tab9_convergence.tex) [4 <./assets/ar
+chitecture_spread.pdf>] [5 <./assets/convergence_curves.pdf>]
+
+** Conference Paper **
+Before submitting the final camera ready copy, remember to:
+
+ 1. Manually equalize the lengths of two columns on the last page
+ of your paper;
+
+ 2. Ensure that any PostScript and/or PDF output post-processing
+ uses only Type 1 fonts and that every step in the generation
+ process uses the appropriate paper size.
+
+[6] (Iconeect2026_camera_ready.aux) )<C:/Users/Windows 11/AppData/Local/Program
+s/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Windows 11/AppData
+/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/Windo
+ws 11/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C
+:/Users/Windows 11/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm
+/cmmi9.pfb><C:/Users/Windows 11/AppData/Local/Programs/MiKTeX/fonts/type1/publi
+c/amsfonts/cm/cmr10.pfb><C:/Users/Windows 11/AppData/Local/Programs/MiKTeX/font
+s/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Windows 11/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Windows 11/AppData/Lo
+cal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Windows 1
+1/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Use
+rs/Windows 11/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy
+10.pfb><C:/Users/Windows 11/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
+sfonts/cm/cmsy6.pfb><C:/Users/Windows 11/AppData/Local/Programs/MiKTeX/fonts/ty
+pe1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Windows 11/AppData/Local/Programs/Mi
+KTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Windows 11/AppData/Loca
+l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/Windows 11
+/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/Win
+dows 11/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/User
+s/Windows 11/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C
+:/Users/Windows 11/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
+fb><C:/Users/Windows 11/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utm
+ri8a.pfb>
+Output written on Iconeect2026_camera_ready.pdf (6 pages, 359849 bytes).
+Transcript written on Iconeect2026_camera_ready.log.

@@ -1,0 +1,268 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{times}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{parskip}
+
+\definecolor{quotegray}{gray}{0.30}
+\newenvironment{rev}%
+  {\begin{quote}\itshape\color{quotegray}}%
+  {\end{quote}}
+\newcommand{\pt}[1]{\textbf{#1}}
+
+\title{\vspace{-1.5em}Response to Reviewers\vspace{-0.5em}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-3em}
+
+\noindent\rule{\textwidth}{0.8pt}
+
+\textbf{Paper:} How Much Does the Activation Function Matter?
+A 2{,}000-Run Variance Study of Gated Recurrent Networks for
+Sentiment Classification
+
+\textbf{Conference:} iCONEECT 2026 \quad\textbf{Paper ID:} [PID]
+
+\noindent\rule{\textwidth}{0.8pt}
+
+We thank both reviewers. Reviewer~2 and Reviewer~3 independently
+identified the same weakness, that the sweep was single-seed.
+Following that point changed the paper substantially.
+
+We did not restrict the replication to the top ten configurations
+as asked. We re-ran \pt{every one of the 400 configurations under
+five seeds, for 2{,}000 trained models}, because a partial
+replication could not have told us whether the problem was local to
+the leaders. It was not. The replication showed that the
+single-seed ranking of activation pairs does not reproduce in any
+of the four architectures, which we now report as the paper's
+principal finding. Several claims in the submitted version did not
+survive and have been removed or reversed; these are listed
+explicitly at the end of this letter.
+
+The title, abstract, research questions, results and conclusion
+have been revised accordingly. The experimental design,
+architectures, hyperparameters and reference list are unchanged.
+
+\section*{Reviewer 2}
+
+\begin{rev}
+Methodology sound. Primary reason for revision: address single-seed
+statistical variance in the results section.
+\end{rev}
+
+\noindent\pt{Addressed. See Section~III-E (Replication Protocol),
+Section~IV-A, Table~IV, and Table~VI.}
+
+Every configuration was retrained under five seeds
+$\{10,20,30,40,50\}$ with the data split held fixed at
+\texttt{random\_state=42}, so the reported variance is the variance
+of retraining the same model on the same data. That is the quantity
+a single-run comparison implicitly assumes to be negligible.
+
+A variance decomposition over the 2{,}000 runs (Table~IV) gives:
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Source & \% of total variance \\
+\midrule
+Random seed & \pt{58.67} \\
+Architecture & 26.69 \\
+\quad of which cell type (GRU vs.\ LSTM) & 26.32 \\
+\quad of which layer-2 bidirectionality & 0.19 \\
+Act$_1\times$Act$_2$ pair & \pt{3.74} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The seed accounts for more variance than every controlled factor
+combined, and roughly sixteen times more than the activation pair.
+Two conclusions changed as a result:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+  \item \pt{The top-ten ranking is withdrawn.} The ten best of 400
+  configurations span 0.12 accuracy points against confidence
+  half-intervals up to $\pm$0.50. Every pair of intervals overlaps.
+  Table~V now reports them as statistically indistinguishable and
+  the text states that the ordering must not be read as a ranking.
+
+  \item \pt{The architecture conclusion is strengthened.} GRU
+  exceeds LSTM by 0.79 points over 1{,}000 runs per family
+  ($p\approx2\times10^{-125}$, Cohen's $d=1.19$), up from the 0.73
+  points reported from single runs. We additionally report that GRU
+  is the more \emph{reliable} family, with roughly 40\% lower
+  seed-to-seed standard deviation ($p\approx2\times10^{-7}$), and
+  that all eight high-variance cells in the grid are LSTM-based.
+\end{itemize}
+
+We also added a power analysis (Section~V-F) giving the seed budget
+needed to resolve each effect: about 4 seeds per cell for the
+architecture difference, about 157 to separate the best cell from
+the tenth. This makes the limitation quantitative rather than
+rhetorical.
+
+\section*{Reviewer 3}
+
+\subsection*{Point 1: Figure quality}
+
+\begin{rev}
+Regenerate Fig.~1 and Fig.~2 as vector (PDF/EPS) or $\geq$300 DPI
+raster. All axis titles, ticks, bar labels fully legible, no
+clipping.
+\end{rev}
+
+\noindent\pt{Addressed. Both figures regenerated as vector PDF.}
+
+Both are now produced by a script that embeds TrueType subsets
+(\texttt{pdf.fonttype~=~42}), reads the trimmed bounding box back
+out of the written PDF, and verifies the on-page size of the
+smallest text. Fig.~1 renders at 8.6~pt and Fig.~2 at 8.3~pt, above
+the 8~pt floor, with no clipped labels and legends placed clear of
+the data.
+
+Fig.~2 (formerly Fig.~1) is the convergence plot; the bar chart that
+was Fig.~2 has been \pt{replaced rather than redrawn}. The submitted
+version plotted the single best activation pair per architecture;
+those peaks are maxima of a noisy single-seed sweep and do not
+reproduce, so redrawing them would have made a misleading figure
+merely legible. The new Fig.~1 plots all 400 replicated cell means
+grouped by architecture with 95\% confidence intervals, which shows
+directly what the data supports: the architectures separate, the
+activation pairs within them do not.
+
+Fig.~2 now shows the mean validation-loss trajectory over five
+seeds with $\pm1$ standard deviation bands, rather than a single
+run.
+
+\subsection*{Point 2: Error bars and confidence intervals}
+
+\begin{rev}
+Main sweep is single-seed. Add standard deviation error bars or
+confidence intervals for the top-10 configurations across multiple
+seeds to show differences are statistically meaningful.
+\end{rev}
+
+\noindent\pt{Addressed, and extended to all 400 configurations.
+See Table~V, Table~VI and Fig.~1.}
+
+Table~V reports the ten best configurations with mean, standard
+deviation and 95\% confidence interval, as requested. The direct
+answer to the reviewer's question is that the differences are
+\pt{not} statistically meaningful: the ten means span 0.12 points
+and all intervals overlap.
+
+Because we replicated the whole grid rather than only the leaders,
+we can also report how far the single-seed ranking is from the
+replicated one (Table~VI):
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Experiment & Spearman $\rho$ & Mean rank $\Delta$ & Top-10 overlap \\
+\midrule
+BiLSTM+LSTM   & $-0.174$ & 36.9 & 0/10 \\
+BiGRU+GRU     & $-0.059$ & 34.5 & 1/10 \\
+BiLSTM+BiLSTM & $-0.041$ & 34.4 & 1/10 \\
+BiGRU+BiGRU   & $+0.055$ & 32.1 & 0/10 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Four independently swept architectures, four correlations
+indistinguishable from zero. We report this as the paper's main
+result.
+
+We chose tables over error bars on the figure for the numeric
+comparisons because Table~V must carry four quantities per row
+(mean, $\sigma$, interval, F1) for ten rows; error bars would
+convey the overlap qualitatively but not the interval widths, and
+the tabular form costs less space under the six-page limit. Fig.~1
+does carry confidence intervals, for the architecture means, where
+a graphical comparison is the more useful presentation.
+
+\subsection*{Point 3: Additional dataset}
+
+\begin{rev}
+(Consider) Test top 5--10 pairings on an additional sentiment
+dataset (SST-2 / Amazon) to confirm the LSTM/GRU inversion holds
+across domains.
+\end{rev}
+
+\noindent\pt{Not carried out. Named as the specific next step in
+the Conclusion.}
+
+We did not have the budget to add a second corpus within the
+camera-ready window, having spent it on the 2{,}000-run
+replication. We are not promising it here; we state plainly that
+it is untested.
+
+One clarification is owed to the reviewer, because the premise of
+the suggestion no longer holds. The cross-architecture
+\emph{inversion} of activation rankings that this point asks us to
+confirm is not a real effect. It was an artefact of single-seed
+measurement. On replicated data the six pairwise correlations
+between architectures' activation marginals range from $-0.164$ to
+$+0.576$ and none is significant ($p\geq0.082$): the rankings
+neither transfer nor invert. There is consequently nothing to
+confirm across domains on that specific point, and the claim has
+been removed from the paper.
+
+What a second corpus would genuinely test is whether the variance
+split and the architectural advantage generalise, and the
+Conclusion now names SST-2 and Amazon Reviews for exactly that
+purpose. We agree it is the right next step.
+
+\section*{Additional corrections made without prompting}
+
+\begin{enumerate}[leftmargin=1.6em,itemsep=2pt]
+  \item \pt{Fig.~1 caption was wrong.} It read ``Per-Epoch
+  Validation Accuracy'' while the plot showed validation
+  \emph{loss}. Corrected.
+
+  \item \pt{A contradiction over seeds is resolved.} The submitted
+  Conclusion attributed two results (88.48\%, 88.43\%) to ``a
+  different seed in the convergence rerun'', while Table~VII stated
+  the seed was fixed at 42. Auditing the code showed the opposite
+  of what the text implied: the convergence rerun \emph{was} seeded
+  at 42, and the main 400-run sweep set \emph{no seed at all}. Both
+  statements have been removed. Over 2{,}000 seeded runs no
+  configuration's mean reaches the 88.40\% benchmark and no
+  individual run attained it (maximum 88.39\%), so the claim that
+  the benchmark ``sits within normal seed variance'' is not
+  supported and has been withdrawn.
+
+  \item \pt{Table~IV row labels were corrupted} in the submitted
+  source (``BiLSTM+BiLSTM+LSTM'', ``BiGRU+BiGRU+GRU''). Corrected.
+
+  \item \pt{Claims withdrawn as unsupported by the replicated
+  data.} Listed here for transparency: the identity of the single
+  best activation pair; the cross-architecture inversion of
+  rankings; the per-configuration precision--recall imbalances of
+  the former Table~VIII (the widest gap between mean precision and
+  mean recall over any cell is 6.89 points, while individual runs
+  reach 24.17, so these are properties of runs, not of
+  configurations); and the dead-neuron penalty for dense-layer
+  ReLU of the former Table~X (no run of 2{,}000 fell below 60\%
+  accuracy, and in BiLSTM+LSTM ReLU is in fact the strongest
+  Act$_1$ choice, $p=0.006$). The corresponding tables have been
+  removed and the space used for the variance and reproducibility
+  results.
+\end{enumerate}
+
+\vspace{0.5em}
+\noindent\rule{\textwidth}{0.4pt}
+
+The paper is within the six-page limit, uses the IEEE conference
+template, carries the required first-page header and copyright
+footer, and has all fonts embedded. The single-seed observation was
+the most useful comment we received; acting on it in full produced
+a stronger result than the one we submitted.
+
+\end{document}

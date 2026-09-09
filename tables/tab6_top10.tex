@@ -1,0 +1,27 @@
+\begin{table}[htbp]
+  \caption{Ten Highest-Accuracy Configurations of 400, with Seed Variability}
+  \label{tab:top_configs}
+  \centering\footnotesize
+  \renewcommand{\arraystretch}{1.1}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{llccc}
+    \toprule
+    Act$_1$ + Act$_2$ & Experiment & Acc.\% & 95\% CI & F1\% \\
+     &  & mean $\pm$ $\sigma$ & $\pm$ & mean \\
+    \midrule
+    ReLU + LeakyReLU & BiGRU+GRU & 87.81 $\pm$ 0.17 & 0.21 & 87.80 \\
+    SiLU + Mish & BiGRU+BiGRU & 87.73 $\pm$ 0.16 & 0.20 & 87.65 \\
+    Tanh + LeakyReLU & BiGRU+BiGRU & 87.72 $\pm$ 0.40 & 0.50 & 87.70 \\
+    Tanh + GELU & BiGRU+GRU & 87.71 $\pm$ 0.29 & 0.36 & 87.75 \\
+    PReLU + ReLU & BiGRU+GRU & 87.71 $\pm$ 0.17 & 0.22 & 87.67 \\
+    GELU + GELU & BiGRU+BiGRU & 87.70 $\pm$ 0.18 & 0.22 & 87.58 \\
+    SiLU + Hardswish & BiGRU+BiGRU & 87.70 $\pm$ 0.10 & 0.12 & 87.69 \\
+    GELU + Hardswish & BiGRU+BiGRU & 87.69 $\pm$ 0.18 & 0.23 & 87.65 \\
+    SiLU + GELU & BiGRU+GRU & 87.68 $\pm$ 0.18 & 0.22 & 87.63 \\
+    PReLU + GELU & BiGRU+GRU & 87.68 $\pm$ 0.28 & 0.34 & 87.71 \\
+    \bottomrule
+    \multicolumn{5}{l}{\small All ten are GRU-based. The ten means span 0.12 points, less than} \\
+    \multicolumn{5}{l}{\small the widest half-interval ($\pm$0.50); every pair of intervals overlaps.} \\
+  \end{tabular}%
+  }
+\end{table}
