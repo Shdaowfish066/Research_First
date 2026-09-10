@@ -109,9 +109,9 @@ supplies all fifty highest-scoring configurations, and is the more
 reliable choice, with roughly 40\% lower seed-to-seed standard
 deviation. One activation effect also survives: smooth
 functions reach 73.7\% validation accuracy after one epoch against
-61.1\% for the ReLU family. We give the seed budget needed to
-resolve each remaining effect, and argue that grid searches of this
-kind should report variance as standard.
+61.1\% for the ReLU family. These results support reporting both
+mean accuracy and variation across training seeds in activation
+comparisons.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -139,39 +139,35 @@ combinations in a bidirectional LSTM, reached 88.40\% accuracy,
 and asked for follow-up work on modern activation functions and
 other architectures.
 
-Answering that call runs into a problem. Every comparison we are
-aware of, including all of
-\cite{eger2018,farzad2019,essaiAli2022,zhu2022,ahmed2025}, trains
-each configuration once. Training is not deterministic. The weight
-initialisation, the dropout masks and the order of the training
-batches all change the final accuracy, even when the data and every
-setting are held identical. If that change is as large as the gaps
-between activation functions, then a ranking built from one run per
-function is measuring the seed rather than the function. No study
-in this area reports how large that change is, so there is no way
-to tell which is being measured.
+Interpreting activation comparisons
+\cite{eger2018,farzad2019,essaiAli2022,zhu2022,ahmed2025}
+requires separating differences between functions from variation
+between training runs. Weight initialisation, dropout masks and
+batch order can change accuracy even when the data and training
+settings stay fixed. A high score from one run therefore provides
+limited evidence for preferring one activation function.
 
-We therefore designed this study around replication. We train all
-100 ordered pairs of ten activation functions across four
-architectures (LSTM, GRU, and the fully bidirectional version of
-each), then repeat every one of those 400 configurations under five
-random seeds, holding the data split fixed so that only
-initialisation, dropout and batch order vary. The result is
-\textbf{2{,}000 trained models}. To our knowledge this is the
-largest controlled activation study in gated recurrent networks,
-and the first in this setting to report seed variance. Five runs of
-every configuration let us measure how much accuracy moves when
-only the seed changes, and compare that against the gaps between
-activation functions:
+We evaluate all 100 ordered pairs of ten activation functions
+in two dense layers across four LSTM/GRU architectures. Training
+each of the 400 configurations with five seeds gives
+\textbf{2{,}000 runs} on a fixed data split. We compare mean
+accuracy, consistency across seeds and ranking agreement;
+a separate follow-up examines early learning. We address six
+questions:
 
 \begin{itemize}\itemsep0pt
-  \item \textbf{RQ1:} How is accuracy variance divided between
-        architecture, activation choice and seed?
-  \item \textbf{RQ2:} Does the architecture exceed seed noise?
-  \item \textbf{RQ3:} Does the activation pair exceed seed noise?
-  \item \textbf{RQ4:} Does a single-seed ranking reproduce?
-  \item \textbf{RQ5:} Which activation effects survive?
-  \item \textbf{RQ6:} How many seeds would the rest require?
+  \item \textbf{RQ1:} How much accuracy variation comes from
+        architecture, activation choice and training seeds?
+  \item \textbf{RQ2:} Which architectures achieve higher mean
+        test accuracy?
+  \item \textbf{RQ3:} How do accuracy gaps between leading
+        activation pairs compare with variation across seeds?
+  \item \textbf{RQ4:} Do single-run rankings agree with
+        five-seed rankings?
+  \item \textbf{RQ5:} How does activation choice affect early
+        learning?
+  \item \textbf{RQ6:} Which architectures give more consistent
+        test accuracy across training runs?
 \end{itemize}
 
 \FloatBarrier
@@ -258,7 +254,7 @@ training data was withheld as a validation set. Reviews were
 cleaned by removing HTML tags and non-alphabetic characters,
 then lowercased. A vocabulary of the 5,000 most frequent
 training-set tokens was used; all sequences were truncated or
-zero-padded to 200 tokens.
+zero-padded to 200 tokens (Table~\ref{tab:hyperparams}).
 
 \subsection{Network Architecture}
 
@@ -348,7 +344,8 @@ measured on the held-out 10,000-review test set.
 \label{sec:replication}
 
 Each of the $10\times10\times4 = 400$ configurations was trained
-under five seeds, $\{10,20,30,40,50\}$, giving $2{,}000$ models.
+under five seeds, $\{10,20,30,40,50\}$
+(Table~\ref{tab:hyperparams}), giving $2{,}000$ models.
 The seed is applied immediately before the model and its data
 loaders are constructed, setting \texttt{random}, \texttt{numpy},
 \texttt{torch} and \texttt{torch.cuda} with
@@ -407,7 +404,8 @@ therefore impossible, and we adopt the fully documented settings of
 Table~\ref{tab:hyperparams} instead.
 
 Replication sharpens what can be said about their 88.40\%. Our best
-configuration averages 87.81\% with a 95\% upper bound of 88.01\%,
+configuration averages 87.81\% (Table~\ref{tab:top_configs})
+with a 95\% upper bound of 88.01\%,
 and no run among the 2{,}000 reached 88.40\% (maximum 88.39\%), so
 the benchmark sits outside the interval of our strongest setting.
 Since they report a single run without a seed or standard
@@ -420,6 +418,7 @@ target.
 \label{sec:results}
 
 \subsection{Variation in Test Accuracy}
+\label{sec:variance}
 
 Table~\ref{tab:variance} reports how architecture, activation
 choice and training seeds contribute to variation in test
@@ -435,6 +434,7 @@ activation-pair contribution.
 \input{tables/tab5_variance.tex}
 
 \subsection{Classification Performance}
+\label{sec:classification}
 \input{tables/tab4_architecture.tex}
 
 Table~\ref{tab:sweep_summary} summarizes accuracy and variation
@@ -448,7 +448,7 @@ BiLSTM+LSTM averages 86.62\%, and BiLSTM+BiLSTM averages
 
 To assess consistency, we calculated the standard deviation
 (SD) across the five seeds for each fixed architecture and
-activation pair. The table reports the median of these 100
+activation pair. Table~\ref{tab:sweep_summary} reports the median of these 100
 SDs for each architecture. The medians range from 0.48 to
 0.53 percentage points for the LSTM architectures and from
 0.29 to 0.33 for the GRU architectures. GRU therefore shows
@@ -469,127 +469,127 @@ configuration means grouped by architecture.
 \end{figure}
 
 ReLU + LeakyReLU in BiGRU+GRU has the highest five-seed mean,
-87.81\%, with an SD of 0.17 percentage points. The highest
+87.81\%, with an SD of 0.17 percentage points
+(Table~\ref{tab:top_configs}). The highest
 individual run reaches 88.39\%.
 
 
 \subsection{The Ten Highest Mean Accuracies}
 
 Table~\ref{tab:top_configs} lists the ten configurations
-with the highest five-seed mean accuracies. All ten use
-GRU, as do the top fifty configurations.
+with the highest mean accuracies among the 400 tested.
+Each mean averages five seeds. All ten use GRU, as do
+the top fifty configurations.
 
-The ten means range from 87.68\% to 87.81\%. Their spread
-is \textbf{0.12} percentage points when calculated from
-the unrounded means. The confidence intervals overlap,
-with the widest extending $\pm$0.50 points. The small
-gaps between means therefore occur alongside uncertainty
-that is often larger than those gaps.
+The ten means range from 87.68\% to 87.81\%. The gap
+between the highest and lowest is 0.124 percentage points
+before rounding. Standard deviations across the five seeds
+range from 0.10 to 0.40 percentage points, showing the
+variation between runs of each configuration.
 
 \input{tables/tab6_top10.tex}
 
 \subsection{Agreement Between Single-Seed and Five-Seed Rankings}
 
-We ranked the 100 activation pairs in each architecture
-by their original single-run accuracy and by their
-five-seed mean. Table~\ref{tab:reproducibility} compares
-these rankings.
+Within each architecture, we ranked the 100 activation
+pairs twice: once by their original single-run accuracy
+and once by their five-seed mean accuracy.
+Table~\ref{tab:original_winners} compares the original and
+five-seed accuracies of the winning pair in each original
+sweep. All four original winners rank 77th or lower by
+five-seed mean.
+
+\input{tables/tab8_original_winners.tex}
+
+Table~\ref{tab:reproducibility} summarizes agreement between
+the rankings across all 100 pairs in each architecture.
 
 \input{tables/tab8_reproducibility.tex}
 
-The Spearman correlations are $-0.174$ for BiLSTM+LSTM,
-$-0.059$ for BiGRU+GRU, $-0.041$ for BiLSTM+BiLSTM and
-$+0.055$ for BiGRU+BiGRU. These values show little agreement
-between the rankings. Pairs move 32 to 37 places on average.
-In each architecture, at most one pair from the original
-top ten remains in the top ten after averaging five runs.
+The Spearman correlations range from $-0.174$ to $+0.055$,
+showing little agreement between the rankings. Pairs move
+32.1 to 36.9 places on average, depending on the architecture.
+Each five-seed top ten contains at most one pair from the
+original top ten. The original accuracy and the five-seed
+mean differ by 0.34 to 0.53 percentage points on average.
 
-For example, LeakyReLU + Tanh leads the original BiGRU+GRU
-ranking at 88.05\%. Its five repeated runs score 86.70\%,
-87.13\%, 87.45\%, 87.46\% and 88.20\%. The mean is 87.39\%,
-with a standard deviation of 0.55 points, placing it 77th.
-ReLU + LeakyReLU has the highest five-seed mean at 87.81\%,
-with a standard deviation of 0.17 points
-(Table~\ref{tab:top_configs}). The original winners in
-BiLSTM+LSTM, BiLSTM+BiLSTM and BiGRU+BiGRU move to
-98th, 91st and 85th, respectively.
+For example, LeakyReLU + Tanh ranks first in the original
+BiGRU+GRU run at 88.05\%, but 77th by its five-seed mean
+of 87.39\%. Its repeated accuracies range from 86.70\%
+to 88.20\%, with a standard deviation of 0.55 percentage
+points. ReLU + LeakyReLU ranks first by five-seed mean,
+at 87.81\% with a standard deviation of 0.17 percentage
+points (Table~\ref{tab:top_configs}).
 
 \subsection{Mean Accuracy for Each Activation Function}
 
-For each dense layer, we average each activation function
-over its ten partners and five seeds, giving 50 runs per
-mean. In the first dense layer, the spread between these
-means is at most 0.67 percentage points across the four
-architectures. In BiGRU+GRU, it is 0.18 points.
-The means for both dense layers are provided in the
-supplementary material.
+Within each architecture, we average test accuracy for each
+activation in the first dense layer over the ten functions
+in the second dense layer and five seeds (50 runs).
+Table~\ref{tab:activation_means} shows the highest and lowest
+of these ten function means.
 
-The six comparisons between architecture rankings give
-Spearman correlations from $-0.164$ to $+0.576$. None is
-statistically significant at the 5\% level ($p\geq0.082$).
-ELU illustrates how rankings change after repeated runs.
-In the original first-layer rankings, it ranks first in
-BiGRU+GRU and last in BiLSTM+LSTM. In the five-seed
-rankings, it ranks ninth and third, respectively.
+\input{tables/tab7_activation_summary.tex}
+
+The largest gap is 0.67 percentage points in BiLSTM+LSTM;
+the other three architectures have gaps of 0.18--0.21 points.
+ReLU has the highest mean in both LSTM architectures, while
+PReLU and SiLU have the highest means in BiGRU+GRU and
+BiGRU+BiGRU, respectively.
 
 \subsection{Learning During Training}
+\label{sec:learning}
 
-To examine early learning, we repeat the ten pairs that
-use the same activation in both dense layers (X+X) on
-BiGRU+GRU. Each pair is trained with five seeds, with
-results recorded after each epoch
-(Table~\ref{tab:convergence},
-Fig.~\ref{fig:convergence_curves}).
-
-\input{tables/tab9_convergence.tex}
+We train BiGRU+GRU with each of the ten functions used in
+both dense layers, using seeds 0, 1, 2, 3 and 42.
 
 After one epoch, Mish, GELU, SiLU and Hardswish average
-\textbf{73.70\%} validation accuracy. ReLU, LeakyReLU and
-SELU average \textbf{61.05\%}. The 12.65-point gap is
-2.9 times the median standard deviation across seeds
-of 4.39 points. The single-seed and five-seed rankings
-also show strong agreement
-(Spearman $\rho=0.891$, $p=0.0005$).
+73.70\% validation accuracy, compared with 61.05\% for
+ReLU, LeakyReLU and SELU. The gap is 12.65 percentage
+points; the median accuracy SD across the ten functions
+is 4.39 points.
 
-By epoch three, the validation losses are similar
-(Fig.~\ref{fig:convergence_curves}). The early accuracy
-difference does not lead to a clear difference in final
-test accuracy.
+The epoch-1 accuracy rankings, from highest to lowest, are:
+
+
+Comparing these rankings gives Spearman's $\rho=0.891$,
+showing strong agreement. However, the means include
+seed 42, so this is not an independent check.
+
+Mean validation losses range from 0.523--0.674 after
+epoch one and narrow to 0.285--0.296 by epoch three
+(Fig.~\ref{fig:convergence_curves}).
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.92\columnwidth]{assets/convergence_curves.pdf}
-  \caption{Validation loss by epoch for the ten pairs using
-  the same activation in both dense layers of BiGRU+GRU.
-  Lines show means over five seeds; shaded bands show
-  $\pm1$ standard deviation. The losses are more closely
-  grouped by epoch three.}
+  \caption{Validation loss for BiGRU+GRU. Each line shows
+  one function's five-seed mean; shading shows $\pm1$ SD.
+  Only epochs reached by all five runs are shown.}
   \label{fig:convergence_curves}
 \end{figure}
 
+
+
 \subsection{Variation Between Runs}
+\label{sec:seed_variation}
 
-The median standard deviation across seeds is 0.30
-percentage points for GRU configurations and 0.50 for
-LSTM configurations ($p\approx2\times10^{-7}$).
-The GRU value is about 40\% lower.
+Table~\ref{tab:sweep_summary} reports median SDs by
+architecture. Across the 200 configurations in each family,
+the median accuracy SD is 0.30 percentage points for GRU
+and 0.50 for LSTM, about 40\% lower for GRU.
 
-All eight configurations with a standard deviation above
-one percentage point use LSTM. Hardswish + LeakyReLU in
-BiLSTM+LSTM has the widest spread: its mean is 82.06\%,
-its standard deviation is 9.27 points, and its five runs
-range from 65.50\% to 86.85\%. No run among the 2{,}000
-scores below 60\%.
+All eight configurations with an SD above one point use
+LSTM. Hardswish + LeakyReLU in BiLSTM+LSTM has the largest
+SD (9.27 points). Its mean accuracy is 82.06\%, below the
+plotted range in Fig.~\ref{fig:architecture_spread}.
+Its five runs range from 65.50\% to 86.85\%, including
+the lowest accuracy among all 2{,}000 runs.
 
-The largest gap between a configuration's mean precision
-and mean recall is 6.89 percentage points. Individual runs
-show gaps as large as 24.17 points. Averaging across seeds
-therefore gives smaller precision--recall gaps than those
-seen in some individual runs.
-
-In BiLSTM+LSTM, ReLU has the highest first-layer mean
-accuracy at 86.83\%, compared with 86.60\% across the
-other first-layer functions ($p=0.006$).
+The largest absolute precision--recall gap is 6.89 points
+between five-seed means, compared with 24.17 points in
+individual runs. Averaging can therefore hide larger
+gaps in individual runs.
 
 The reported mean training time is 13.4~s per run on an
 NVIDIA RTX 5080. BiGRU+GRU has about 734K parameters,
@@ -600,115 +600,105 @@ compared with 764K for BiLSTM+LSTM
 \section{Discussion}
 \label{sec:discussion}
 
-\subsection{RQ1--RQ3: Architecture, Activation Choice and Training Seeds}
+\subsection{RQ1: How much accuracy variation comes from architecture, activation choice and training seeds?}
+\label{sec:rq1}
 
-Table~\ref{tab:variance} shows that training seeds account for
-58.7\% of the variation in test accuracy, compared with 26.7\%
-for architecture and 3.7\% for activation pairs. Variation
-between training runs is therefore larger than the variation
-linked to either architecture or activation choice alone.
+Seed variation accounts for 58.7\% of total variance,
+architecture for 26.7\%, the architecture--activation
+interaction for 10.9\%, and activation pairs for 3.7\%
+(Table~\ref{tab:variance}). Seed variation is the largest
+component in this setting.
 
-The classification results in Section~\ref{sec:results} show
-a 0.79-percentage-point gap between GRU and LSTM, with Cohen's
-$d=1.19$. Table~\ref{tab:sweep_summary} shows a smaller change
-from making the second recurrent layer bidirectional: LSTM
-accuracy rises from 86.62\% to 86.75\%, while both GRU
-architectures average 87.48\% at the reported precision.
-Layer-2 bidirectionality accounts for 0.19\% of the total
-variance (Table~\ref{tab:variance}).
+\subsection{RQ2: Which architectures achieve higher mean test accuracy?}
+\label{sec:rq2}
 
-Within BiGRU+GRU, the mean accuracies of the 100 activation
-pairs range from 87.12\% to 87.81\%
-(Table~\ref{tab:sweep_summary}). This 0.69-point spread is
-smaller than the 0.79-point gap between GRU and LSTM.
-The same table reports a median standard deviation of
-0.33 points across seeds. Thus, differences between
-activation pairs occur alongside variation between training
-runs, which limits how clearly small accuracy gaps can
-be interpreted.
-\subsection{RQ4: Agreement Between Single-Seed and Five-Seed Rankings}
+Both GRU architectures have higher mean test accuracy than
+both LSTM architectures (Table~\ref{tab:sweep_summary}).
+The family mean gap is 0.79 percentage points, while making
+the second recurrent layer bidirectional changes mean
+accuracy little.
 
-The two rankings show little agreement in all four architectures
-(Table~\ref{tab:reproducibility}). Their Spearman correlations range
-from $-0.174$ to $+0.055$, all close to zero. Activation pairs move
-32 to 37 places on average between the rankings. In each
-architecture, at most one pair from the original top ten remains
-in the top ten after averaging five runs.
+\subsection{RQ3: How do accuracy gaps between leading activation pairs compare with variation across seeds?}
+\label{sec:rq3}
 
-The small accuracy gaps between pairs help explain these changes.
-Across architectures, the median standard deviation across seeds
-ranges from 0.29 to 0.53 percentage points. When accuracy gaps are
-small relative to this variation, changes between training runs
-can change the order of the pairs. Here, the ranking from one run
-gives little indication of the ranking based on five runs.
+Among the leading configurations, mean accuracy gaps are
+small relative to seed SDs (Table~\ref{tab:top_configs}).
+These results do not establish a consistently best pair,
+but they also do not establish that all pairs perform equally.
 
-\subsection{RQ5--RQ6: Findings Across Seeds and Estimated Seed Counts}
+\subsection{RQ4: Do single-run rankings agree with five-seed rankings?}
+\label{sec:rq4}
+
+The single-run and five-seed rankings show little agreement
+(Table~\ref{tab:reproducibility}). A high rank from one run
+therefore does not reliably identify the pairs with the
+highest means after repeated training.
+
+\subsection{RQ5: How does activation choice affect early learning?}
+\label{sec:rq5}
+
+Activation choice affects epoch-one validation accuracy
+(Section~\ref{sec:learning}), while validation losses become
+closely grouped by epoch three
+(Fig.~\ref{fig:convergence_curves}). The early differences
+do not establish an advantage in final test accuracy.
+
+\subsection{RQ6: Which architectures give more consistent test accuracy across training runs?}
 \label{sec:rq6}
 
-The clearest activation difference appears after the first epoch.
-Mish, GELU, SiLU and Hardswish average 73.70\% validation accuracy,
-compared with 61.05\% for ReLU, LeakyReLU and SELU. The 12.65-point
-gap is 2.9 times the median standard deviation across seeds.
-The single-seed and five-seed rankings are also similar
-($\rho=0.891$). This difference concerns early learning; final
-accuracy shows no clear separation. GRU models vary less between
-runs than LSTM models. All eight configurations with a standard
-deviation above one percentage point use LSTM.
-The estimated seed counts depend on the size of the accuracy gap.
-Using the median standard deviation of 0.38 percentage points,
-80\% power and $\alpha=0.05$, the 0.79-point gap between GRU and
-LSTM corresponds to about \textbf{4} seeds per configuration.
-The 0.12-point gap between the first- and tenth-ranked
-configurations corresponds to about \textbf{157}. These estimates
-are based on the observed variation. At 13.4~s per run, 157 seeds
-across 100 activation pairs correspond to about 58 GPU-hours
-for one architecture.
+GRU configurations show lower variation across seeds
+(Table~\ref{tab:sweep_summary}). Their pooled median SD is
+0.30 percentage points, compared with 0.50 for LSTM,
+about 40\% lower. All eight configurations with an SD
+above one point use LSTM (Section~\ref{sec:seed_variation}).
 
 \subsection{Limitations}
 
-The study covers one dataset and one task family, so the variance
-split should be re-estimated before being assumed elsewhere. The
-data split is held fixed by design, so our estimates exclude split
-variance and are lower bounds. Five seeds suffice for the
-architectural conclusions, but leave per-cell intervals wide
-relative to the differences between cells, so individual cell means
-should be read with their intervals attached.
+The study uses one dataset and a fixed data split. It does
+not measure variation caused by changing the split or
+establish whether the activation patterns hold on other
+datasets. 
 
 \section{Conclusion}
 
-We trained 2{,}000 models, testing 100 activation pairs across
-four recurrent architectures with five seeds each. Training
-seeds accounted for 58.7\% of the variation in test accuracy,
-compared with 26.7\% for architecture and 3.7\% for activation
-pairs.
+This study examines how architecture, dense-layer activation
+choice and training seeds affect sentiment-classification
+accuracy on IMDb. We evaluate 100 ordered activation pairs
+across four recurrent architectures, with five seeds per
+configuration, giving 2{,}000 runs. This design allows us to
+compare differences between configurations with the variation
+observed when the same configuration is trained repeatedly.
+Seed variation accounts for 58.7\% of total test-accuracy
+variance, architecture for 26.7\%, activation pairs for 3.7\%,
+and their interaction for 10.9\% (Table~\ref{tab:variance}).
 
-Our main contribution is showing how repeated training changes
-the conclusions of an activation comparison. Earlier studies
-discussed in this paper reported rankings from single runs.
-In our experiments, those rankings showed little agreement
-with five-run rankings, moving more than 32 places on average.
-This challenges the use of a single run as evidence that one
-activation pair is better than another.
+Architecture choice shows a clearer pattern than the ordering
+of individual activation pairs. GRU exceeds LSTM by 0.79
+percentage points in family mean accuracy
+(Table~\ref{tab:sweep_summary}). GRU configurations also have
+about 40\% lower median SD across seeds, while all eight
+configurations with an SD above one point use LSTM
+(Section~\ref{sec:seed_variation}). Thus, under the tested
+settings, GRU combines higher average accuracy with greater
+consistency across training runs.
 
-Architecture differences were clearer. GRU exceeded LSTM by
-0.79 percentage points, supplied all fifty highest-scoring
-configurations, and showed about 40\% lower standard deviation
-across seeds. Making the second GRU layer bidirectional added
-no measurable accuracy benefit.
+The evidence for preferring a particular activation pair is
+less clear. Single-run rankings show little agreement with
+five-seed rankings (Table~\ref{tab:reproducibility}), and
+accuracy gaps among the leading pairs are small relative to
+their seed SDs (Table~\ref{tab:top_configs}). These findings
+limit what a single high score can tell us about which pair
+will perform well across repeated training. They do not show
+that all activation pairs perform equally. Activation choice
+also affects early learning, although validation losses become
+closely grouped by epoch three
+(Fig.~\ref{fig:convergence_curves}).
 
-Activation choice mainly affected early learning. Mish, GELU,
-SiLU and Hardswish averaged 73.70\% validation accuracy after
-one epoch, compared with 61.05\% for ReLU, LeakyReLU and SELU.
-Their early advantage did not produce a clear difference in
-final test accuracy.
-
-Under our IMDb settings, architecture choice deserves more
-attention than small differences between activation pairs.
-More broadly, claims of better performance should be supported
-by repeated runs and reported uncertainty. Future work should
-test these findings on other datasets, different data splits,
-and attention-based models.
-
+The main practical finding is that activation comparisons
+should report both mean accuracy and variation across training
+seeds. In this study, architecture choice has a larger effect
+on accuracy than activation-pair choice, while repeated runs
+change which pairs appear strongest. 
 {\footnotesize
 \begin{thebibliography}{23}
 \setlength{\itemsep}{-2.2pt}
