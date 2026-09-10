@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.13)  10 SEP 2026 16:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.13)  10 SEP 2026 16:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**d:/research/Research_First/camera_ready_submission/source/Iconeect2026_camera_ready.tex
-(d:/research/Research_First/camera_ready_submission/source/Iconeect2026_camera_ready.tex
+**d:/research/Research_First/camera_ready_submission/source/camera_ready_submission.tex
+(d:/research/Research_First/camera_ready_submission/source/camera_ready_submission.tex
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-05-26>
 (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/ieeetran\IEEEtran.cls
@@ -414,8 +414,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 ) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count325
-) (Iconeect2026_camera_ready.aux)
-\openout1 = `Iconeect2026_camera_ready.aux'.
+) (camera_ready_submission.aux)
+\openout1 = `camera_ready_submission.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 75.
 LaTeX Font Info:    ... okay on input line 75.
@@ -477,9 +477,9 @@ Package microtype Info: No adjustment of character kerning.
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
 Package hyperref Info: Link coloring OFF on input line 75.
- (Iconeect2026_camera_ready.out) (Iconeect2026_camera_ready.out)
+ (camera_ready_submission.out) (camera_ready_submission.out)
 \@outlinefile=\write3
-\openout3 = `Iconeect2026_camera_ready.out'.
+\openout3 = `camera_ready_submission.out'.
 
  (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
@@ -518,17 +518,17 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `pcr' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [2] (tables/tab5_variance.tex) (tables/tab4_architecture.tex)
-<assets/architecture_spread.pdf, id=203, 216.55743pt x 143.81787pt>
+ [2] (tables/tab5_variance.tex) (tables/tab4_architecture.tex) (tables/tab4_architecture.tex)
+<assets/architecture_spread.pdf, id=204, 216.55743pt x 143.81787pt>
 File: assets/architecture_spread.pdf Graphic file (type pdf)
 <use assets/architecture_spread.pdf>
-Package pdftex.def Info: assets/architecture_spread.pdf  used on input line 455.
+Package pdftex.def Info: assets/architecture_spread.pdf  used on input line 456.
 (pdftex.def)             Requested size: 231.83954pt x 153.97356pt.
- [3] (tables/tab6_top10.tex) (tables/tab8_reproducibility.tex) (tables/tab9_convergence.tex) [4 <./assets/architecture_spread.pdf>]
+ [3] (tables/tab6_top10.tex) (tables/tab8_reproducibility.tex) [4 <./assets/architecture_spread.pdf>] (tables/tab9_convergence.tex)
 <assets/convergence_curves.pdf, id=243, 224.92099pt x 173.2628pt>
 File: assets/convergence_curves.pdf Graphic file (type pdf)
 <use assets/convergence_curves.pdf>
-Package pdftex.def Info: assets/convergence_curves.pdf  used on input line 565.
+Package pdftex.def Info: assets/convergence_curves.pdf  used on input line 566.
 (pdftex.def)             Requested size: 231.83954pt x 178.60277pt.
  [5 <./assets/convergence_curves.pdf>]
 
@@ -542,26 +542,30 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6] (Iconeect2026_camera_ready.aux)
+[6] (camera_ready_submission.aux)
  ***********
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-05-26>
  ***********
-Package rerunfilecheck Info: File `Iconeect2026_camera_ready.out' has not changed.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package rerunfilecheck Info: File `camera_ready_submission.out' has not changed.
 (rerunfilecheck)             Checksum: 36C78D28C7F29E0B907B835FEF451B81;5391.
  ) 
 Here is how much of TeX's memory you used:
- 14640 strings out of 467509
- 233637 string characters out of 5408780
- 705074 words of memory out of 5000000
+ 14643 strings out of 467509
+ 233718 string characters out of 5408780
+ 705709 words of memory out of 5000000
  43268 multiletter control sequences out of 15000+600000
  762100 words of font info for 371 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 74i,13n,79p,1080b,469s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 74i,13n,79p,1078b,469s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Iconeect2026_camera_ready.pdf (6 pages, 359523 bytes).
+Output written on camera_ready_submission.pdf (6 pages, 360397 bytes).
 PDF statistics:
- 371 PDF objects out of 1000 (max. 8388607)
- 64 named destinations out of 1000 (max. 500000)
+ 373 PDF objects out of 1000 (max. 8388607)
+ 65 named destinations out of 1000 (max. 500000)
  63179 words of extra memory for PDF output out of 74296 (max. 10000000)
 

@@ -1,0 +1,863 @@
+\documentclass[conference,a4paper]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage[T1]{fontenc}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{placeins}
+\usepackage{fancyhdr}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\emergencystretch=2em
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Navigation bookmarks: gives the PDF an outline pane in Acrobat, Edge,
+% Okular, VS Code's viewer, etc. hidelinks keeps the printed page identical
+% (no coloured or boxed links), so this changes navigation only, not layout.
+% hyperref is loaded last, as it must be.
+\usepackage[hidelinks,bookmarks=true,bookmarksnumbered=true,
+            bookmarksopen=true,bookmarksopenlevel=2,
+            pdftitle={How Much Does the Activation Function Matter?
+                      A 2000-Run Variance Study of Gated Recurrent Networks
+                      for Sentiment Classification},
+            pdfsubject={iCONEECT 2026}]{hyperref}
+
+% ── iCONEECT 2026 camera-ready: first-page header and copyright footer ─────
+% Both are required on page 1 only. \fancyhf{} clears IEEEtran's own footer,
+% so the copyright notice is printed here rather than left to \IEEEpubid;
+% \IEEEpubid is still issued after \maketitle so IEEEtran reserves the
+% column space and body text cannot collide with the notice.
+\fancypagestyle{firstpage}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+  \fancyhead[L]{\fontsize{9}{10}\selectfont
+    \parbox{\textwidth}{2026 1st International Conference on Next-Generation
+    Electrical \& Electronics, Computer Systems, and Technologies (iCONEECT).\\
+    25--26 September, 2026, Premier University, Chittagong, Bangladesh}}%
+  \fancyfoot[L]{\fontsize{9}{10}\selectfont
+    979-8-3195-4810-8/26/\$31.00~\copyright2026 IEEE}%
+}
+
+\title{How Much Does the Activation Function Matter?\\
+A 2{,}000-Run Variance Study of Gated Recurrent\\
+Networks for Sentiment Classification}
+
+\author{%
+\IEEEauthorblockN{[AUTHOR 1 NAME]}
+\IEEEauthorblockA{\textit{[DEPT 1]} \\
+\textit{[INSTITUTION 1]}\\{}
+[CITY 1], [COUNTRY 1] \\{}
+[EMAIL 1]}
+\and
+\IEEEauthorblockN{[AUTHOR 2 NAME]}
+\IEEEauthorblockA{\textit{[DEPT 2]} \\
+\textit{[INSTITUTION 2]}\\{}
+[CITY 2], [COUNTRY 2] \\{}
+[EMAIL 2]}
+\and
+\IEEEauthorblockN{[AUTHOR 3 NAME]}
+\IEEEauthorblockA{\textit{[DEPT 3]} \\
+\textit{[INSTITUTION 3]}\\{}
+[CITY 3], [COUNTRY 3] \\{}
+[EMAIL 3]}
+}
+
+\begin{document}
+\raggedbottom
+
+% iCONEECT 2026 camera-ready: first-page footer (copyright notice).
+% \IEEEpubid must follow \maketitle to take effect on page 1.
+\IEEEpubid{\makebox[\columnwidth]{979-8-3195-4810-8/26/\$31.00~\copyright2026
+  IEEE\hfill}\hspace{\columnsep}\makebox[\columnwidth]{}}
+
+\maketitle
+\thispagestyle{firstpage}
+\IEEEpubidadjcol
+
+\begin{abstract}
+Activation-function comparisons in gated recurrent networks are
+almost always reported from a single training run. It has therefore
+never been established whether the differences they report are
+larger than the noise of retraining the same model. This paper
+settles that question at scale. We train all 100 ordered pairs of ten
+activation functions in the dense layers of four gated recurrent
+architectures on IMDb, and repeat every one of the 400
+configurations under five random seeds, for \textbf{2{,}000 models}
+in total with every other setting held fixed. A variance
+decomposition over these runs shows that the random seed accounts
+for \textbf{58.7\%} of all variation in test accuracy and the
+architecture for \textbf{26.7\%}, while the activation pair explains
+only \textbf{3.7\%}. The consequence is direct: single-seed
+activation rankings do not reproduce. Across the four
+architectures the Spearman correlation between the single-seed
+ranking of the 100 pairs and their five-seed means is
+$-0.174$, $-0.059$, $-0.041$ and $+0.055$, indistinguishable from
+zero in every case, and the ten best configurations overlap within
+their confidence intervals. What survives is architectural: GRU
+outperforms LSTM by 0.79 points ($p<10^{-100}$, Cohen's $d=1.19$),
+supplies all fifty highest-scoring configurations, and is the more
+reliable choice, with roughly 40\% lower seed-to-seed standard
+deviation. One activation effect also survives: smooth
+functions reach 73.7\% validation accuracy after one epoch against
+61.1\% for the ReLU family. We give the seed budget needed to
+resolve each remaining effect, and argue that grid searches of this
+kind should report variance as standard.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Sentiment Analysis, IMDb Dataset, Deep Learning, LSTM, GRU, Activation Functions, Reproducibility, Seed Variance, Experimental Methodology.
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+Sentiment analysis is the task of deciding whether a piece of
+text is positive or negative. It is one of the most common
+problems in natural language processing. The IMDb Large
+Movie Review Dataset, with 50{,}000 balanced reviews, is the
+standard benchmark for the binary version of the
+task~\cite{maas2011}. LSTM and GRU networks are the usual
+choice for this problem because their gating mechanisms let
+them track context across long sequences~\cite{hochreiter1997,cho2014,chung2014}.
+
+One part of these models gets little attention: the activation
+function in the dense layers that sit after the recurrent
+layers. The gates inside the recurrent cell are fixed to
+sigmoid and tanh, but the dense layers that turn the recurrent
+output into a final prediction can use any activation function.
+Ahmed et al.~\cite{ahmed2025} tested three classical
+combinations in a bidirectional LSTM, reached 88.40\% accuracy,
+and asked for follow-up work on modern activation functions and
+other architectures.
+
+Answering that call runs into a problem. Every comparison we are
+aware of, including all of
+\cite{eger2018,farzad2019,essaiAli2022,zhu2022,ahmed2025}, trains
+each configuration once. Training is not deterministic. The weight
+initialisation, the dropout masks and the order of the training
+batches all change the final accuracy, even when the data and every
+setting are held identical. If that change is as large as the gaps
+between activation functions, then a ranking built from one run per
+function is measuring the seed rather than the function. No study
+in this area reports how large that change is, so there is no way
+to tell which is being measured.
+
+We therefore designed this study around replication. We train all
+100 ordered pairs of ten activation functions across four
+architectures (LSTM, GRU, and the fully bidirectional version of
+each), then repeat every one of those 400 configurations under five
+random seeds, holding the data split fixed so that only
+initialisation, dropout and batch order vary. The result is
+\textbf{2{,}000 trained models}. To our knowledge this is the
+largest controlled activation study in gated recurrent networks,
+and the first in this setting to report seed variance. Five runs of
+every configuration let us measure how much accuracy moves when
+only the seed changes, and compare that against the gaps between
+activation functions:
+
+\begin{itemize}\itemsep0pt
+  \item \textbf{RQ1:} How is accuracy variance divided between
+        architecture, activation choice and seed?
+  \item \textbf{RQ2:} Does the architecture exceed seed noise?
+  \item \textbf{RQ3:} Does the activation pair exceed seed noise?
+  \item \textbf{RQ4:} Does a single-seed ranking reproduce?
+  \item \textbf{RQ5:} Which activation effects survive?
+  \item \textbf{RQ6:} How many seeds would the rest require?
+\end{itemize}
+
+\FloatBarrier
+\section{Literature Review}
+
+Hochreiter and Schmidhuber~\cite{hochreiter1997} introduced
+the LSTM to address the vanishing gradient problem in
+recurrent networks, using sigmoid and tanh within the
+recurrent cell. Cho et al.~\cite{cho2014} proposed the GRU,
+which uses two gates and combines the cell and hidden
+states. Chung et al.~\cite{chung2014} compared GRU and LSTM
+on sequence-modeling tasks and found GRU competitive with
+LSTM. Schuster and Paliwal~\cite{schuster1997} introduced
+bidirectional recurrent networks, allowing models to use
+both past and future context. These studies established
+the recurrent architectures used in our comparison.
+
+The activation function literature developed alongside
+these architectural advances. Nair and Hinton~\cite{nair2010}
+studied ReLU, which avoids saturation for positive inputs
+but has zero gradients for negative inputs. Maas et
+al.~\cite{maas2013} and Clevert et al.~\cite{clevert2015}
+studied LeakyReLU and ELU, which allow nonzero outputs for
+negative inputs. Klambauer et al.~\cite{klambauer2017}
+introduced SELU with self-normalising properties under
+specific conditions. Later work introduced
+GELU~\cite{hendrycks2016}, Swish~\cite{ramachandran2017},
+and Mish~\cite{misra2020}, while
+surveys~\cite{nwankpa2018,apicella2021} reviewed the growing
+range of activation functions. These developments motivate
+examining their effects in the dense layers following
+gated recurrent networks.
+
+Within sentiment analysis, IMDb~\cite{maas2011} is a widely
+used binary classification benchmark. Tang et
+al.~\cite{tang2015} studied gated recurrent networks for
+document-level sentiment classification, and Socher et
+al.~\cite{socher2013} introduced the Stanford Sentiment
+Treebank. Several studies have examined activation choice.
+Eger et al.~\cite{eger2018} compared 21 activations across
+eight NLP tasks and also investigated alternative
+activations within LSTM cells. Farzad et
+al.~\cite{farzad2019} compared 23 activation functions in
+a basic LSTM network on IMDb, Movie Review, and MNIST.
+Essai Ali et al.~\cite{essaiAli2022} evaluated 26 state
+activation functions in LSTM networks on classification
+tasks outside sentiment analysis. Zhu and
+Tan~\cite{zhu2022} tested a custom activation in simple RNN,
+LSTM, and GRU models on IMDb, comparing it with ReLU,
+LeakyReLU, ELU, SELU, and tanh. Ahmed et
+al.~\cite{ahmed2025} compared three classical activation
+pairings in a bidirectional LSTM, reported 88.40\% accuracy,
+and suggested examining modern functions and other
+architectures.
+
+Our study brings these comparisons into a shared experimental
+design. We evaluate all 100 ordered pairs of ten activation
+functions in two dense layers across four architectures.
+These use LSTM or GRU cells, a bidirectional first recurrent
+layer, and either a unidirectional or bidirectional second
+layer. The comparison includes GELU, SiLU, and Mish, with
+the data split and training settings held fixed.
+
+Repeated training is also part of earlier work. Eger et
+al.~\cite{eger2018} explicitly averaged results over five
+random weight initializations in their sentence-classification
+experiments. Our main contribution is therefore the analysis
+of how variation between training runs compares with the
+effects of architecture and dense-layer activation choice
+in this setting. We train every configuration with five
+seeds and examine whether rankings from one run agree with
+rankings based on repeated runs. This allows us to assess
+which performance differences are clear and which remain
+uncertain.%heyyy
+\FloatBarrier
+\section{Methodology}
+%------------------------------------------------------------------------------
+\subsection{Dataset and Preprocessing}
+
+The IMDb Large Movie Review Dataset~\cite{maas2011} (50,000
+reviews, balanced binary labels) was split 80/20 train-test
+with \texttt{random\_state=42}, and 10\% of
+training data was withheld as a validation set. Reviews were
+cleaned by removing HTML tags and non-alphabetic characters,
+then lowercased. A vocabulary of the 5,000 most frequent
+training-set tokens was used; all sequences were truncated or
+zero-padded to 200 tokens.
+
+\subsection{Network Architecture}
+
+All four experiments share the same model structure. The
+only thing that changes within each experiment is the choice of
+Act$_1$ and Act$_2$ in the two dense layers. The shared architecture
+is: an embedding layer
+(vocabulary 5,000, dimension 128), a bidirectional recurrent
+Layer~1 (64 units per direction), a recurrent Layer~2 (32
+units per direction), Dropout(0.4), Dense Layer~1 (64 units)
+with Act$_1$, Dense Layer~2 (32 units) with Act$_2$, and a
+single output unit trained with \texttt{BCEWithLogitsLoss}.
+The four experiments differ only in the recurrent cell type
+(LSTM, GRU) and whether Layer 2
+is bidirectional (Table~\ref{tab:architectures}).
+
+\begin{table}[htbp]
+  \caption{Experimental Architecture Summary}
+  \label{tab:architectures}
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabular}{cllr}
+    \toprule
+    Exp. & Layer 1 & Layer 2 & Params \\
+    \midrule
+    1 & BiLSTM(64) & LSTM(32)    & ${\approx}$764K \\
+    2 & BiGRU(64)  & GRU(32)     & ${\approx}$734K \\
+    3 & BiLSTM(64) & BiLSTM(32)  & ${\approx}$787K \\
+    4 & BiGRU(64)  & BiGRU(32)   & ${\approx}$752K \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Activation Functions Under Investigation}
+
+Ten activation functions were evaluated
+(Table~\ref{tab:activations}). The classical family is
+ReLU~\cite{nair2010}, LeakyReLU~\cite{maas2013},
+PReLU~\cite{he2015}, ELU~\cite{clevert2015}, Tanh and
+SELU~\cite{klambauer2017}. The modern smooth family is
+GELU~\cite{hendrycks2016}, SiLU (Swish)~\cite{ramachandran2017},
+Mish~\cite{misra2020} and Hardswish~\cite{howard2019}. The latter
+four had not previously been benchmarked in gated recurrent dense
+layers for sentiment classification.
+
+\begin{table}[htbp]
+  \caption{Activation Functions: Families and Key Properties}
+  \label{tab:activations}
+  \centering\footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.05}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lll}
+    \toprule
+    Function & Type & Formula / Key Property \\
+    \midrule
+    ReLU      & Classical & $\max(0,x)$; dead neurons for $x{<}0$ \\
+    ELU       & Classical & $\alpha(e^x{-}1)$ for $x{\leq}0$; mean-centering \\
+    LeakyReLU & Classical & $0.01x$ for $x{<}0$; low dead-neuron risk \\
+    Tanh      & Classical & Bounded; saturates for $|x|\gg1$ \\
+    GELU      & Modern & $x\cdot\Phi(x)$; probabilistic gating \\
+    SiLU      & Modern & $x\cdot\sigma(x)$; self-gating \\
+    Mish      & Modern & $x\cdot\tanh(\text{softplus}(x))$; smooth \\
+    SELU      & Modern & Self-normalising; implicit batch norm \\
+    PReLU     & Modern & Learnable slope $a$; input-dependent \\
+    Hardswish & Modern & Piecewise; dead zone for $x{<}{-3}$ \\
+    \bottomrule
+  \end{tabular}%
+  }
+\end{table}
+
+\subsection{Training Configuration and Evaluation}
+
+Every setting in Table~\ref{tab:hyperparams} was held the
+same across all runs, so the activation pair is the only
+thing that changes between models. The architecture parameters
+(vocabulary, embedding, layer sizes, dropout) replicate
+Ahmed et al.~\cite{ahmed2025} exactly. The training parameters
+(optimizer, learning rate, batch size, scheduler, clipping)
+were chosen by us because Ahmed et al. did not report them.
+After training, accuracy, precision, recall, and F1-score were
+measured on the held-out 10,000-review test set.
+
+\subsection{Replication Protocol}
+\label{sec:replication}
+
+Each of the $10\times10\times4 = 400$ configurations was trained
+under five seeds, $\{10,20,30,40,50\}$, giving $2{,}000$ models.
+The seed is applied immediately before the model and its data
+loaders are constructed, setting \texttt{random}, \texttt{numpy},
+\texttt{torch} and \texttt{torch.cuda} with
+\texttt{cudnn.deterministic=True}, so a given (pair, seed) is
+exactly reproducible.
+
+The split is deliberately \emph{not} a function of the seed: it
+stays pinned at \texttt{random\_state=42}. The variance we report
+is therefore the variance of retraining the same model on the same
+data. That is the quantity a single-run comparison assumes to be
+negligible. Split variance would only inflate it, so these
+estimates are conservative.
+
+Runs were executed five at a time, one worker per seed. Each
+worker is a separate process with its own RNG and deterministic
+kernel selection, so concurrency cannot perturb a result; we
+confirmed this by re-running sampled configurations serially and
+recovering identical metrics.
+
+\begin{table}[htbp]
+  \caption{Shared Hyperparameter Configuration}
+  \label{tab:hyperparams}
+  \centering\footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.05}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lll}
+    \toprule
+    Hyperparameter & Value & Source \\
+    \midrule
+    Vocab / Seq.\ length / Embed. & 5{,}000 / 200 / 128 & \cite{ahmed2025} \\
+    RNN Layer 1 / Layer 2 units   & 64 / 32 per direction & \cite{ahmed2025} \\
+    Dense Layer 1 / Layer 2 units & 64 / 32 & \cite{ahmed2025} \\
+    Dropout rate                  & 0.4 & \cite{ahmed2025} \\
+    Batch size / Max epochs       & 64 / 10 & Ours \\
+    Early stopping patience       & 3 epochs (val.\ loss) & Ours \\
+    Optimiser                     & Adam, $\text{lr}=10^{-3}$ & Ours \\
+    LR scheduler                  & ReduceLROnPlateau ($\times$0.5) & Ours \\
+    Loss / Gradient clipping      & BCEWithLogitsLoss / $L_2\leq1.0$ & Ours \\
+    Weight initialisation         & Kaiming uniform (Linear) & PyTorch default \\
+    Data split seed               & 42, fixed for all runs & Ours \\
+    Training seeds                & 10, 20, 30, 40, 50 & Ours \\
+    \bottomrule
+  \end{tabular}%
+  }
+\end{table}
+
+\subsection{On Reproducing the Baseline of Ahmed et al.}
+\label{sec:baseline_repro}
+
+Ahmed et al.~\cite{ahmed2025} describe their architecture in full
+and we copy it exactly, but they do not report how they trained
+it: optimizer, learning rate, batch size, epochs, early stopping,
+seed and data split are all missing. Exact reproduction is
+therefore impossible, and we adopt the fully documented settings of
+Table~\ref{tab:hyperparams} instead.
+
+Replication sharpens what can be said about their 88.40\%. Our best
+configuration averages 87.81\% with a 95\% upper bound of 88.01\%,
+and no run among the 2{,}000 reached 88.40\% (maximum 88.39\%), so
+the benchmark sits outside the interval of our strongest setting.
+Since they report a single run without a seed or standard
+deviation, and we measure the per-cell standard deviation of this
+model family at 0.38 points, their figure is best read as one draw
+of unknown uncertainty. We treat it as a reference point, not a
+target.
+%------------------------------------------------------------------------------
+\FloatBarrier\section{Results}
+\label{sec:results}
+
+\subsection{Variation in Test Accuracy}
+
+Table~\ref{tab:variance} reports how architecture, activation
+choice and training seeds contribute to variation in test
+accuracy across the 2{,}000 runs.
+
+Differences between runs of the same configuration account
+for \textbf{58.7\%} of the total variance. Architecture accounts
+for 26.7\%, including 26.3\% for the choice between LSTM and
+GRU and 0.19\% for making the second recurrent layer
+bidirectional. Activation pairs account for \textbf{3.7\%}.
+The reported seed contribution is about sixteen times the
+activation-pair contribution.
+
+\input{tables/tab5_variance.tex}
+
+\subsection{Classification Performance}
+\input{tables/tab4_architecture.tex}
+
+Table~\ref{tab:sweep_summary} gives the accuracy results for
+each architecture. Each architecture mean covers 500 runs.
+The 95\% confidence intervals range from $\pm$0.03 to
+$\pm$0.10 percentage points.
+
+\input{tables/tab4_architecture.tex}
+
+Both GRU architectures average 87.48\% at the reported
+precision. BiLSTM+LSTM averages 86.62\%, while
+BiLSTM+BiLSTM averages 86.75\%.
+Fig.~\ref{fig:architecture_spread} shows the five-seed mean
+of each of the 400 configurations.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\columnwidth]{assets/architecture_spread.pdf}
+  \caption{Mean accuracy of the 400 configurations, grouped
+  by architecture. Each point represents one activation pair
+  averaged over five seeds. Black markers show architecture
+  means with 95\% confidence intervals. The $y$-axis starts
+  at 85.8\%, leaving one configuration outside the plotted
+  range: Hardswish + LeakyReLU in BiLSTM+LSTM
+  (mean 82.06\%, standard deviation 9.27 points).}
+  \label{fig:architecture_spread}
+\end{figure}
+
+Combining the two architectures in each family gives
+1{,}000 runs each for GRU and LSTM. Their mean accuracies
+and 95\% confidence intervals are $87.48\pm0.02$\% and
+$86.69\pm0.05$\%, respectively. The difference is
+\textbf{0.79} percentage points
+(Welch $t=26.7$, $p\approx2\times10^{-125}$,
+Cohen's $d=1.19$).
+
+The highest configuration mean is 87.81\%, with an upper
+95\% confidence limit of 88.01\%. The highest individual
+run reaches 88.39\%. Neither reaches the 88.40\% reported
+by Ahmed et al.~\cite{ahmed2025}. Differences in training
+settings are described in Section~\ref{sec:baseline_repro}.
+
+\subsection{The Ten Highest Mean Accuracies}
+
+Table~\ref{tab:top_configs} lists the ten configurations
+with the highest five-seed mean accuracies. All ten use
+GRU, as do the top fifty configurations.
+
+The ten means range from 87.68\% to 87.81\%. Their spread
+is \textbf{0.12} percentage points when calculated from
+the unrounded means. The confidence intervals overlap,
+with the widest extending $\pm$0.50 points. The small
+gaps between means therefore occur alongside uncertainty
+that is often larger than those gaps.
+
+\input{tables/tab6_top10.tex}
+
+\subsection{Agreement Between Single-Seed and Five-Seed Rankings}
+
+We ranked the 100 activation pairs in each architecture
+by their original single-run accuracy and by their
+five-seed mean. Table~\ref{tab:reproducibility} compares
+these rankings.
+
+\input{tables/tab8_reproducibility.tex}
+
+The Spearman correlations are $-0.174$ for BiLSTM+LSTM,
+$-0.059$ for BiGRU+GRU, $-0.041$ for BiLSTM+BiLSTM and
+$+0.055$ for BiGRU+BiGRU. These values show little agreement
+between the rankings. Pairs move 32 to 37 places on average.
+In each architecture, at most one pair from the original
+top ten remains in the top ten after averaging five runs.
+
+For example, LeakyReLU + Tanh leads the original BiGRU+GRU
+ranking at 88.05\%. Its five repeated runs score 86.70\%,
+87.13\%, 87.45\%, 87.46\% and 88.20\%. The mean is 87.39\%,
+with a standard deviation of 0.55 points, placing it 77th.
+ReLU + LeakyReLU has the highest five-seed mean at 87.81\%,
+with a standard deviation of 0.17 points
+(Table~\ref{tab:top_configs}). The original winners in
+BiLSTM+LSTM, BiLSTM+BiLSTM and BiGRU+BiGRU move to
+98th, 91st and 85th, respectively.
+
+\subsection{Mean Accuracy for Each Activation Function}
+
+For each dense layer, we average each activation function
+over its ten partners and five seeds, giving 50 runs per
+mean. In the first dense layer, the spread between these
+means is at most 0.67 percentage points across the four
+architectures. In BiGRU+GRU, it is 0.18 points.
+The means for both dense layers are provided in the
+supplementary material.
+
+The six comparisons between architecture rankings give
+Spearman correlations from $-0.164$ to $+0.576$. None is
+statistically significant at the 5\% level ($p\geq0.082$).
+ELU illustrates how rankings change after repeated runs.
+In the original first-layer rankings, it ranks first in
+BiGRU+GRU and last in BiLSTM+LSTM. In the five-seed
+rankings, it ranks ninth and third, respectively.
+
+\subsection{Learning During Training}
+
+To examine early learning, we repeat the ten pairs that
+use the same activation in both dense layers (X+X) on
+BiGRU+GRU. Each pair is trained with five seeds, with
+results recorded after each epoch
+(Table~\ref{tab:convergence},
+Fig.~\ref{fig:convergence_curves}).
+
+\input{tables/tab9_convergence.tex}
+
+After one epoch, Mish, GELU, SiLU and Hardswish average
+\textbf{73.70\%} validation accuracy. ReLU, LeakyReLU and
+SELU average \textbf{61.05\%}. The 12.65-point gap is
+2.9 times the median standard deviation across seeds
+of 4.39 points. The single-seed and five-seed rankings
+also show strong agreement
+(Spearman $\rho=0.891$, $p=0.0005$).
+
+By epoch three, the validation losses are similar
+(Fig.~\ref{fig:convergence_curves}). The early accuracy
+difference does not lead to a clear difference in final
+test accuracy.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\columnwidth]{assets/convergence_curves.pdf}
+  \caption{Validation loss by epoch for the ten pairs using
+  the same activation in both dense layers of BiGRU+GRU.
+  Lines show means over five seeds; shaded bands show
+  $\pm1$ standard deviation. The losses are more closely
+  grouped by epoch three.}
+  \label{fig:convergence_curves}
+\end{figure}
+
+\subsection{Variation Between Runs}
+
+The median standard deviation across seeds is 0.30
+percentage points for GRU configurations and 0.50 for
+LSTM configurations ($p\approx2\times10^{-7}$).
+The GRU value is about 40\% lower.
+
+All eight configurations with a standard deviation above
+one percentage point use LSTM. Hardswish + LeakyReLU in
+BiLSTM+LSTM has the widest spread: its mean is 82.06\%,
+its standard deviation is 9.27 points, and its five runs
+range from 65.50\% to 86.85\%. No run among the 2{,}000
+scores below 60\%.
+
+The largest gap between a configuration's mean precision
+and mean recall is 6.89 percentage points. Individual runs
+show gaps as large as 24.17 points. Averaging across seeds
+therefore gives smaller precision--recall gaps than those
+seen in some individual runs.
+
+In BiLSTM+LSTM, ReLU has the highest first-layer mean
+accuracy at 86.83\%, compared with 86.60\% across the
+other first-layer functions ($p=0.006$).
+
+The reported mean training time is 13.4~s per run on an
+NVIDIA RTX 5080. BiGRU+GRU has about 734K parameters,
+compared with 764K for BiLSTM+LSTM
+(Table~\ref{tab:architectures}).
+
+\FloatBarrier
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{RQ1--RQ3: Architecture, Activation Choice and Training Seeds}
+
+Table~\ref{tab:variance} shows that training seeds account for
+58.7\% of the variation in test accuracy, compared with 26.7\%
+for architecture and 3.7\% for activation pairs. Variation
+between training runs is therefore larger than the variation
+linked to either architecture or activation choice alone.
+
+The classification results in Section~\ref{sec:results} show
+a 0.79-percentage-point gap between GRU and LSTM, with Cohen's
+$d=1.19$. Table~\ref{tab:sweep_summary} shows a smaller change
+from making the second recurrent layer bidirectional: LSTM
+accuracy rises from 86.62\% to 86.75\%, while both GRU
+architectures average 87.48\% at the reported precision.
+Layer-2 bidirectionality accounts for 0.19\% of the total
+variance (Table~\ref{tab:variance}).
+
+Within BiGRU+GRU, the mean accuracies of the 100 activation
+pairs range from 87.12\% to 87.81\%
+(Table~\ref{tab:sweep_summary}). This 0.69-point spread is
+smaller than the 0.79-point gap between GRU and LSTM.
+The same table reports a median standard deviation of
+0.33 points across seeds. Thus, differences between
+activation pairs occur alongside variation between training
+runs, which limits how clearly small accuracy gaps can
+be interpreted.
+\subsection{RQ4: Agreement Between Single-Seed and Five-Seed Rankings}
+
+The two rankings show little agreement in all four architectures
+(Table~\ref{tab:reproducibility}). Their Spearman correlations range
+from $-0.174$ to $+0.055$, all close to zero. Activation pairs move
+32 to 37 places on average between the rankings. In each
+architecture, at most one pair from the original top ten remains
+in the top ten after averaging five runs.
+
+The small accuracy gaps between pairs help explain these changes.
+Across architectures, the median standard deviation across seeds
+ranges from 0.29 to 0.53 percentage points. When accuracy gaps are
+small relative to this variation, changes between training runs
+can change the order of the pairs. Here, the ranking from one run
+gives little indication of the ranking based on five runs.
+
+\subsection{RQ5--RQ6: Findings Across Seeds and Estimated Seed Counts}
+\label{sec:rq6}
+
+The clearest activation difference appears after the first epoch.
+Mish, GELU, SiLU and Hardswish average 73.70\% validation accuracy,
+compared with 61.05\% for ReLU, LeakyReLU and SELU. The 12.65-point
+gap is 2.9 times the median standard deviation across seeds.
+The single-seed and five-seed rankings are also similar
+($\rho=0.891$). This difference concerns early learning; final
+accuracy shows no clear separation. GRU models vary less between
+runs than LSTM models. All eight configurations with a standard
+deviation above one percentage point use LSTM.
+The estimated seed counts depend on the size of the accuracy gap.
+Using the median standard deviation of 0.38 percentage points,
+80\% power and $\alpha=0.05$, the 0.79-point gap between GRU and
+LSTM corresponds to about \textbf{4} seeds per configuration.
+The 0.12-point gap between the first- and tenth-ranked
+configurations corresponds to about \textbf{157}. These estimates
+are based on the observed variation. At 13.4~s per run, 157 seeds
+across 100 activation pairs correspond to about 58 GPU-hours
+for one architecture.
+
+\subsection{Limitations}
+
+The study covers one dataset and one task family, so the variance
+split should be re-estimated before being assumed elsewhere. The
+data split is held fixed by design, so our estimates exclude split
+variance and are lower bounds. Five seeds suffice for the
+architectural conclusions, but leave per-cell intervals wide
+relative to the differences between cells, so individual cell means
+should be read with their intervals attached.
+
+\section{Conclusion}
+
+We trained 2{,}000 models, testing 100 activation pairs across
+four recurrent architectures with five seeds each. Training
+seeds accounted for 58.7\% of the variation in test accuracy,
+compared with 26.7\% for architecture and 3.7\% for activation
+pairs.
+
+Our main contribution is showing how repeated training changes
+the conclusions of an activation comparison. Earlier studies
+discussed in this paper reported rankings from single runs.
+In our experiments, those rankings showed little agreement
+with five-run rankings, moving more than 32 places on average.
+This challenges the use of a single run as evidence that one
+activation pair is better than another.
+
+Architecture differences were clearer. GRU exceeded LSTM by
+0.79 percentage points, supplied all fifty highest-scoring
+configurations, and showed about 40\% lower standard deviation
+across seeds. Making the second GRU layer bidirectional added
+no measurable accuracy benefit.
+
+Activation choice mainly affected early learning. Mish, GELU,
+SiLU and Hardswish averaged 73.70\% validation accuracy after
+one epoch, compared with 61.05\% for ReLU, LeakyReLU and SELU.
+Their early advantage did not produce a clear difference in
+final test accuracy.
+
+Under our IMDb settings, architecture choice deserves more
+attention than small differences between activation pairs.
+More broadly, claims of better performance should be supported
+by repeated runs and reported uncertainty. Future work should
+test these findings on other datasets, different data splits,
+and attention-based models.
+
+{\footnotesize
+\begin{thebibliography}{23}
+\setlength{\itemsep}{-2.2pt}
+
+% -- Gated Recurrent Architectures --
+
+\bibitem{hochreiter1997}
+S. Hochreiter and J. Schmidhuber,
+``Long short-term memory,''
+\textit{Neural Computation}, vol.~9, no.~8, pp.~1735--1780, Nov. 1997.
+
+\bibitem{cho2014}
+K. Cho, B. van Merri\"{e}nboer, C. Gulcehre, D. Bahdanau, F. Bougares,
+H. Schwenk, and Y. Bengio,
+``Learning phrase representations using RNN encoder-decoder for statistical
+machine translation,''
+in \textit{Proc. EMNLP}, 2014, pp.~1724--1734.
+
+\bibitem{chung2014}
+J. Chung, C. Gulcehre, K. Cho, and Y. Bengio,
+``Empirical evaluation of gated recurrent neural networks on sequence
+modeling,''
+\textit{arXiv preprint arXiv:1412.3555}, 2014.
+
+\bibitem{schuster1997}
+M. Schuster and K.~K. Paliwal,
+``Bidirectional recurrent neural networks,''
+\textit{IEEE Trans. Signal Process.}, vol.~45, no.~11,
+pp.~2673--2681, Nov. 1997.
+
+% -- Activation Functions --
+
+\bibitem{nair2010}
+V. Nair and G.~E. Hinton,
+``Rectified linear units improve restricted Boltzmann machines,''
+in \textit{Proc. ICML}, 2010, pp.~807--814.
+
+\bibitem{maas2013}
+A.~L. Maas, A.~Y. Hannun, and A.~Y. Ng,
+``Rectifier nonlinearities improve neural network acoustic models,''
+in \textit{Proc. ICML Workshop on Deep Learning for Audio, Speech and
+Language Processing}, 2013.
+
+\bibitem{he2015}
+K. He, X. Zhang, S. Ren, and J. Sun,
+``Delving deep into rectifiers: Surpassing human-level performance on
+ImageNet classification,''
+in \textit{Proc. ICCV}, 2015, pp.~1026--1034.
+
+\bibitem{clevert2015}
+D. Clevert, T. Unterthiner, and S. Hochreiter,
+``Fast and accurate deep network learning by exponential linear units
+(ELUs),''
+\textit{arXiv preprint arXiv:1511.07289}, 2015.
+
+\bibitem{klambauer2017}
+G. Klambauer, T. Unterthiner, A. Mayr, and S. Hochreiter,
+``Self-normalizing neural networks,''
+in \textit{Proc. NeurIPS}, 2017, pp.~971--980.
+
+\bibitem{hendrycks2016}
+D. Hendrycks and K. Gimpel,
+``Gaussian error linear units (GELUs),''
+\textit{arXiv preprint arXiv:1606.08415}, 2016.
+
+\bibitem{ramachandran2017}
+P. Ramachandran, B. Zoph, and Q.~V. Le,
+``Searching for activation functions,''
+\textit{arXiv preprint arXiv:1710.05941}, 2017.
+
+\bibitem{misra2020}
+D. Misra,
+``Mish: A self regularized non-monotonic activation function,''
+in \textit{Proc. BMVC}, 2020.
+
+\bibitem{howard2019}
+A. Howard \textit{et al.},
+``Searching for MobileNetV3,''
+in \textit{Proc. ICCV}, 2019, pp.~1314--1324.
+
+\bibitem{apicella2021}
+A. Apicella, F. Donnarumma, F. Isgr\`{o}, and R. Prevete,
+``A survey on modern trainable activation functions,''
+\textit{Neural Networks}, vol.~138, pp.~14--32, 2021.
+
+\bibitem{nwankpa2018}
+C. Nwankpa, W. Ijomah, A. Gachagan, and S. Marshall,
+``Activation functions: Comparison of trends in practice and research for
+deep learning,''
+\textit{arXiv preprint arXiv:1811.03378}, 2018.
+
+% -- Sentiment Analysis --
+
+\bibitem{maas2011}
+A.~L. Maas, R.~E. Daly, P.~T. Pham, D. Huang, A.~Y. Ng, and C. Potts,
+``Learning word vectors for sentiment analysis,''
+in \textit{Proc. ACL}, 2011, pp.~142--150.
+
+\bibitem{ahmed2025}
+S.~A. Ahmed \textit{et al.},
+``Comparative analysis of activation functions in LSTM models for sentiment
+classification,''
+\textit{IJARCCE}, vol.~14, no.~4, Apr. 2025.
+
+\bibitem{zhu2022}
+Y. Zhu and R. Tan,
+``A novel activation function based recurrent neural networks and their
+applications on sentiment classification and log anomaly detection,''
+\textit{Frontiers in Neurorobotics}, vol.~16, 2022.
+
+\bibitem{socher2013}
+R. Socher, A. Perelygin, J. Wu, J. Chuang, C.~D. Manning, A. Ng,
+and C. Potts,
+``Recursive deep models for semantic compositionality over a sentiment
+treebank,''
+in \textit{Proc. EMNLP}, 2013, pp.~1631--1642.
+
+\bibitem{tang2015}
+D. Tang, B. Qin, and T. Liu,
+``Document modeling with gated recurrent neural network for sentiment
+classification,''
+in \textit{Proc. EMNLP}, 2015, pp.~1422--1432.
+
+% -- Direct Competitors --
+
+\bibitem{eger2018}
+S. Eger, P. Youssef, and I. Gurevych,
+``Is it time to swish? Comparing deep learning activation functions across
+NLP tasks,''
+in \textit{Proc. EMNLP}, 2018, pp.~4423--4433.
+
+\bibitem{farzad2019}
+A. Farzad, H. Mashayekhi, and H. Hassanpour,
+``A comparative performance analysis of different activation functions in
+LSTM networks for classification,''
+\textit{Neural Computing and Applications}, vol.~31,
+pp.~2507--2521, 2019.
+
+\bibitem{essaiAli2022}
+M.~H. Essai~Ali, A.~I. Taloba, M.~F. Farhan, and R.~A. Abozeid,
+``Developing novel activation functions based deep learning LSTM for
+classification,''
+\textit{IEEE Access}, vol.~10, pp.~96578--96591, 2022.
+
+\end{thebibliography}
+}
+\end{document}

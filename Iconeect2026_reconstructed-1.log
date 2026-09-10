@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.13)  10 SEP 2026 16:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.13)  10 SEP 2026 16:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**d:/research/Research_First/camera_ready_submission/source/Iconeect2026_camera_ready.tex
-(d:/research/Research_First/camera_ready_submission/source/Iconeect2026_camera_ready.tex
+**d:/research/Research_First/Iconeect2026_reconstructed-1.tex
+(d:/research/Research_First/Iconeect2026_reconstructed-1.tex
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-05-26>
 (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/ieeetran\IEEEtran.cls
@@ -22,7 +22,7 @@ LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 50
 (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
--- Using 210mm x 297mm (a4) paper.
+-- Using 8.5in x 11in (letter) paper.
 -- Using PDF output.
 \@IEEEnormalsizeunitybaselineskip=\dimen153
 -- This is a 10 point document.
@@ -294,175 +294,54 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@thisrulewidth=\dimen256
 ) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/placeins\placeins.sty
 Package: placeins 2005/04/18  v 2.2
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
-Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
-\f@nch@headwidth=\skip60
-\f@nch@offset@elh=\skip61
-\f@nch@offset@erh=\skip62
-\f@nch@offset@olh=\skip63
-\f@nch@offset@orh=\skip64
-\f@nch@offset@elf=\skip65
-\f@nch@offset@erf=\skip66
-\f@nch@offset@olf=\skip67
-\f@nch@offset@orf=\skip68
-\f@nch@height=\skip69
-\f@nch@footalignment=\skip70
-\f@nch@widthL=\skip71
-\f@nch@widthC=\skip72
-\f@nch@widthR=\skip73
-\@temptokenb=\toks27
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
-Package: hyperref 2026-04-24 v7.01q Hypertext links for LaTeX
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
-Package: iftex 2024/12/12 v1.0g TeX engine tests
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
-Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
-Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.sty
-Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
-Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
-Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
-Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
-)
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
-Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
-Package: nameref 2026-01-29 v2.58 Cross-referencing by name of section
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
-Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
-Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
-Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
-))
-\c@section@level=\count314
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.sty
-Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
-)
-\@linkdim=\dimen257
-\Hy@linkcounter=\count315
-\Hy@pagecounter=\count316
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
-File: pd1enc.def 2026-04-24 v7.01q Hyperref: PDFDocEncoding definition (HO)
-Now handling font encoding PD1 ...
-... no UTF-8 mapping file for font encoding PD1
-) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
-Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
-)
-\Hy@SavedSpaceFactor=\count317
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
-File: puenc.def 2026-04-24 v7.01q Hyperref: PDF Unicode definition (HO)
-Now handling font encoding PU ...
-... no UTF-8 mapping file for font encoding PU
-)
-Package hyperref Info: Option `bookmarks' set `true' on input line 4070.
-Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 4070.
-Package hyperref Info: Option `bookmarksopen' set `true' on input line 4070.
-Package hyperref Info: Hyper figures OFF on input line 4199.
-Package hyperref Info: Link nesting OFF on input line 4204.
-Package hyperref Info: Hyper index ON on input line 4207.
-Package hyperref Info: Plain pages OFF on input line 4214.
-Package hyperref Info: Backreferencing OFF on input line 4219.
-Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4466.
-\c@Hy@tempcnt=\count318
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
-\Urlmuskip=\muskip18
-Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-)
-LaTeX Info: Redefining \url on input line 4805.
-\XeTeXLinkMargin=\dimen258
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
-Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
-Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
-))
-\Fld@menulength=\count319
-\Field@Width=\dimen259
-\Fld@charsize=\dimen260
-Package hyperref Info: Hyper figures OFF on input line 6091.
-Package hyperref Info: Link nesting OFF on input line 6096.
-Package hyperref Info: Hyper index ON on input line 6099.
-Package hyperref Info: backreferencing OFF on input line 6106.
-Package hyperref Info: Link coloring OFF on input line 6111.
-Package hyperref Info: Link coloring with OCG OFF on input line 6116.
-Package hyperref Info: PDF/A mode OFF on input line 6121.
-\Hy@abspage=\count320
-\c@Item=\count321
-\c@Hfootnote=\count322
-)
-Package hyperref Info: Driver (autodetected): hpdftex.
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
-File: hpdftex.def 2026-04-24 v7.01q Hyperref driver for pdfTeX
-\Fld@listcount=\count323
-\c@bookmark@seq@number=\count324
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
-Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
-Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
-)
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 284.
-)
-\Hy@SectionHShift=\skip74
 ) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count325
-) (Iconeect2026_camera_ready.aux)
-\openout1 = `Iconeect2026_camera_ready.aux'.
+\l__color_backend_stack_int=\count314
+) (Iconeect2026_reconstructed-1.aux)
+\openout1 = `Iconeect2026_reconstructed-1.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
 
 -- Lines per column: 56 (exact).
 (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count326
-\scratchdimen=\dimen261
+\scratchcounter=\count315
+\scratchdimen=\dimen257
 \scratchbox=\box60
-\nofMPsegments=\count327
-\nofMParguments=\count328
-\everyMPshowfont=\toks28
-\MPscratchCnt=\count329
-\MPscratchDim=\dimen262
-\MPnumerator=\count330
-\makeMPintoPDFobject=\count331
-\everyMPtoPDFconversion=\toks29
+\nofMPsegments=\count316
+\nofMParguments=\count317
+\everyMPshowfont=\toks27
+\MPscratchCnt=\count318
+\MPscratchDim=\dimen258
+\MPnumerator=\count319
+\makeMPintoPDFobject=\count320
+\everyMPtoPDFconversion=\toks28
 ) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-LaTeX Info: Redefining \microtypecontext on input line 75.
-Package microtype Info: Applying patch `item' on input line 75.
-Package microtype Info: Applying patch `toc' on input line 75.
-Package microtype Info: Applying patch `eqnum' on input line 75.
-Package microtype Info: Applying patch `footnote' on input line 75.
-Package microtype Info: Applying patch `verbatim' on input line 75.
-LaTeX Info: Redefining \microtypesetup on input line 75.
+LaTeX Info: Redefining \microtypecontext on input line 28.
+Package microtype Info: Applying patch `item' on input line 28.
+Package microtype Info: Applying patch `toc' on input line 28.
+Package microtype Info: Applying patch `eqnum' on input line 28.
+Package microtype Info: Applying patch `footnote' on input line 28.
+Package microtype Info: Applying patch `verbatim' on input line 28.
+LaTeX Info: Redefining \microtypesetup on input line 28.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -475,42 +354,25 @@ Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
  (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-ptm.cfg
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
-)
-Package hyperref Info: Link coloring OFF on input line 75.
- (Iconeect2026_camera_ready.out) (Iconeect2026_camera_ready.out)
-\@outlinefile=\write3
-\openout3 = `Iconeect2026_camera_ready.out'.
-
- (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-cmr.cfg
+) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 104.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 89.
  (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 104.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 89.
  (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 18.05034pt, for example:
-(fancyhdr)                \setlength{\headheight}{18.05034pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-6.05034pt}.
-
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 191.
-(C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [1{C:/Users/whelm/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 256.
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 160.
  (C:\Users\whelm\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
@@ -518,19 +380,39 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `pcr' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [2] (tables/tab5_variance.tex) (tables/tab4_architecture.tex)
-<assets/architecture_spread.pdf, id=203, 216.55743pt x 143.81787pt>
-File: assets/architecture_spread.pdf Graphic file (type pdf)
-<use assets/architecture_spread.pdf>
-Package pdftex.def Info: assets/architecture_spread.pdf  used on input line 455.
-(pdftex.def)             Requested size: 231.83954pt x 153.97356pt.
- [3] (tables/tab6_top10.tex) (tables/tab8_reproducibility.tex) (tables/tab9_convergence.tex) [4 <./assets/architecture_spread.pdf>]
-<assets/convergence_curves.pdf, id=243, 224.92099pt x 173.2628pt>
-File: assets/convergence_curves.pdf Graphic file (type pdf)
-<use assets/convergence_curves.pdf>
-Package pdftex.def Info: assets/convergence_curves.pdf  used on input line 565.
-(pdftex.def)             Requested size: 231.83954pt x 178.60277pt.
- [5 <./assets/convergence_curves.pdf>]
+ [2]
+
+LaTeX Warning: File `assets/convergence_curves.png' not found on input line 475.
+
+
+d:/research/Research_First/Iconeect2026_reconstructed-1.tex:475: Package pdftex.def Error: File `assets/convergence_curves.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.475 ...lumnwidth]{assets/convergence_curves.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[3]
+
+LaTeX Warning: File `assets/best_pairs.png' not found on input line 583.
+
+
+d:/research/Research_First/Iconeect2026_reconstructed-1.tex:583: Package pdftex.def Error: File `assets/best_pairs.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.583 ...=0.92\columnwidth]{assets/best_pairs.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[4] [5]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -542,26 +424,24 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6] (Iconeect2026_camera_ready.aux)
+[6] (Iconeect2026_reconstructed-1.aux)
  ***********
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-05-26>
  ***********
-Package rerunfilecheck Info: File `Iconeect2026_camera_ready.out' has not changed.
-(rerunfilecheck)             Checksum: 36C78D28C7F29E0B907B835FEF451B81;5391.
  ) 
 Here is how much of TeX's memory you used:
- 14640 strings out of 467509
- 233637 string characters out of 5408780
- 705074 words of memory out of 5000000
- 43268 multiletter control sequences out of 15000+600000
- 762100 words of font info for 371 fonts, out of 8000000 for 9000
+ 7471 strings out of 467509
+ 119304 string characters out of 5408780
+ 615399 words of memory out of 5000000
+ 36292 multiletter control sequences out of 15000+600000
+ 762543 words of font info for 363 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 74i,13n,79p,1080b,469s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Iconeect2026_camera_ready.pdf (6 pages, 359523 bytes).
+ 57i,12n,65p,1052b,319s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/whelm/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Iconeect2026_reconstructed-1.pdf (6 pages, 235292 bytes).
 PDF statistics:
- 371 PDF objects out of 1000 (max. 8388607)
- 64 named destinations out of 1000 (max. 500000)
- 63179 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 112 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 67073 words of extra memory for PDF output out of 74296 (max. 10000000)
 
