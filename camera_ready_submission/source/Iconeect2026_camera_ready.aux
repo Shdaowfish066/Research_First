@@ -63,25 +63,28 @@
 \newlabel{sec:baseline_repro}{{\mbox  {III-F}}{3}{On Reproducing the Baseline of Ahmed et al}{subsection.3.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Results}{3}{section.4}\protected@file@percent }
 \newlabel{sec:results}{{IV}{3}{Results}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Where the Variance Comes From}{3}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Variation in Test Accuracy}{3}{subsection.4.1}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Variance Decomposition of Test Accuracy (2{,}000 Runs)}}{3}{table.4}\protected@file@percent }
 \newlabel{tab:variance}{{IV}{3}{Variance Decomposition of Test Accuracy (2{,}000 Runs)}{table.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Classification Performance}{3}{subsection.4.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The 400 replicated cell means, grouped by architecture. Each point is one activation pair averaged over five seeds; black markers give the architecture mean with its 95\% confidence interval. The $y$-axis is truncated at 85.8\%, which clips one outlier cell (Hardswish + LeakyReLU in BiLSTM+LSTM, 82.06\%, $\sigma =9.27$).}}{4}{figure.1}\protected@file@percent }
-\newlabel{fig:architecture_spread}{{1}{4}{The 400 replicated cell means, grouped by architecture. Each point is one activation pair averaged over five seeds; black markers give the architecture mean with its 95\% confidence interval. The $y$-axis is truncated at 85.8\%, which clips one outlier cell (Hardswish + LeakyReLU in BiLSTM+LSTM, 82.06\%, $\sigma =9.27$)}{figure.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}The Ten Best Configurations}{4}{subsection.4.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Ten Highest-Accuracy Configurations of 400, with Seed Variability}}{4}{table.5}\protected@file@percent }
-\newlabel{tab:top_configs}{{V}{4}{Ten Highest-Accuracy Configurations of 400, with Seed Variability}{table.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Reproducibility of the Single-Seed Ranking}{4}{subsection.4.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Agreement Between the Single-Seed Ranking and the 5-Seed Means}}{4}{table.6}\protected@file@percent }
-\newlabel{tab:reproducibility}{{VI}{4}{Agreement Between the Single-Seed Ranking and the 5-Seed Means}{table.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Marginal Effects per Activation}{4}{subsection.4.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Convergence Speed}{4}{subsection.4.6}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Epoch-1 Convergence on BiGRU+GRU, Five Seeds}}{5}{table.7}\protected@file@percent }
-\newlabel{tab:convergence}{{VII}{5}{Epoch-1 Convergence on BiGRU+GRU, Five Seeds}{table.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Per-epoch validation loss on BiGRU+GRU for the ten homogeneous pairs. Curves are means over five seeds; shaded bands are $\pm 1$ standard deviation. The separation visible at epoch~1 has closed by epoch~3.}}{5}{figure.2}\protected@file@percent }
-\newlabel{fig:convergence_curves}{{2}{5}{Per-epoch validation loss on BiGRU+GRU for the ten homogeneous pairs. Curves are means over five seeds; shaded bands are $\pm 1$ standard deviation. The separation visible at epoch~1 has closed by epoch~3}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Reliability and Failure Modes}{5}{subsection.4.7}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Cross-Experiment Accuracy over 2{,}000 Runs (500 per Experiment)}}{3}{table.5}\protected@file@percent }
+\newlabel{tab:sweep_summary}{{V}{3}{Cross-Experiment Accuracy over 2{,}000 Runs (500 per Experiment)}{table.5}{}}
+\citation{ahmed2025}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Mean accuracy of the 400 configurations, grouped by architecture. Each point represents one activation pair averaged over five seeds. Black markers show architecture means with 95\% confidence intervals. The $y$-axis starts at 85.8\%, leaving one configuration outside the plotted range: Hardswish + LeakyReLU in BiLSTM+LSTM (mean 82.06\%, standard deviation 9.27 points).}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:architecture_spread}{{1}{4}{Mean accuracy of the 400 configurations, grouped by architecture. Each point represents one activation pair averaged over five seeds. Black markers show architecture means with 95\% confidence intervals. The $y$-axis starts at 85.8\%, leaving one configuration outside the plotted range: Hardswish + LeakyReLU in BiLSTM+LSTM (mean 82.06\%, standard deviation 9.27 points)}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}The Ten Highest Mean Accuracies}{4}{subsection.4.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Ten Highest-Accuracy Configurations of 400, with Seed Variability}}{4}{table.6}\protected@file@percent }
+\newlabel{tab:top_configs}{{VI}{4}{Ten Highest-Accuracy Configurations of 400, with Seed Variability}{table.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Agreement Between Single-Seed and Five-Seed Rankings}{4}{subsection.4.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Agreement Between the Single-Seed Ranking and the 5-Seed Means}}{4}{table.7}\protected@file@percent }
+\newlabel{tab:reproducibility}{{VII}{4}{Agreement Between the Single-Seed Ranking and the 5-Seed Means}{table.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Mean Accuracy for Each Activation Function}{4}{subsection.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Learning During Training}{4}{subsection.4.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Epoch-1 Convergence on BiGRU+GRU, Five Seeds}}{5}{table.8}\protected@file@percent }
+\newlabel{tab:convergence}{{VIII}{5}{Epoch-1 Convergence on BiGRU+GRU, Five Seeds}{table.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Validation loss by epoch for the ten pairs using the same activation in both dense layers of BiGRU+GRU. Lines show means over five seeds; shaded bands show $\pm 1$ standard deviation. The losses are more closely grouped by epoch three.}}{5}{figure.2}\protected@file@percent }
+\newlabel{fig:convergence_curves}{{2}{5}{Validation loss by epoch for the ten pairs using the same activation in both dense layers of BiGRU+GRU. Lines show means over five seeds; shaded bands show $\pm 1$ standard deviation. The losses are more closely grouped by epoch three}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-G}}Variation Between Runs}{5}{subsection.4.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {V}Discussion}{5}{section.5}\protected@file@percent }
 \newlabel{sec:discussion}{{V}{5}{Discussion}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}RQ1--RQ3: Architecture, Activation Choice and Training Seeds}{5}{subsection.5.1}\protected@file@percent }
