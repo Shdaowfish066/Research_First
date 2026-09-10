@@ -178,66 +178,74 @@ activation functions:
 \section{Literature Review}
 
 Hochreiter and Schmidhuber~\cite{hochreiter1997} introduced
-the LSTM to solve the vanishing gradient problem in recurrent
-networks, using sigmoid and tanh as internal gate activations.
-Cho et al.~\cite{cho2014} proposed the GRU, which reduces the gating
-structure to two gates and merges the cell and hidden states, and Chung
-et al.~\cite{chung2014} showed that GRU matches LSTM on sequence
-tasks with fewer parameters. Schuster and Paliwal~\cite{schuster1997}
-added bidirectionality, letting the model use both past and future
-context. None of these works asked whether the activation
-functions in the layers around the recurrent cells were optimal.
+the LSTM to address the vanishing gradient problem in
+recurrent networks, using sigmoid and tanh within the
+recurrent cell. Cho et al.~\cite{cho2014} proposed the GRU,
+which uses two gates and combines the cell and hidden
+states. Chung et al.~\cite{chung2014} compared GRU and LSTM
+on sequence-modeling tasks and found GRU competitive with
+LSTM. Schuster and Paliwal~\cite{schuster1997} introduced
+bidirectional recurrent networks, allowing models to use
+both past and future context. These studies established
+the recurrent architectures used in our comparison.
 
-The activation function literature evolved separately. Nair and
-Hinton~\cite{nair2010} introduced ReLU, trading saturation for the
-risk of killing neurons on negative inputs; Maas et
+The activation function literature developed alongside
+these architectural advances. Nair and Hinton~\cite{nair2010}
+studied ReLU, which avoids saturation for positive inputs
+but has zero gradients for negative inputs. Maas et
 al.~\cite{maas2013} and Clevert et al.~\cite{clevert2015}
-addressed this with LeakyReLU and ELU, and Klambauer et
-al.~\cite{klambauer2017} introduced SELU with a self-normalising
-property. More recently GELU~\cite{hendrycks2016} became the
-transformer default, Swish~\cite{ramachandran2017} was found by
-automated search, and Mish~\cite{misra2020} outperformed both on
-vision benchmarks; surveys~\cite{nwankpa2018,apicella2021}
-catalogue the growing range. All were developed and tested in
-feedforward, convolutional or transformer settings, leaving their
-behaviour inside gated recurrent dense layers untested.
+studied LeakyReLU and ELU, which allow nonzero outputs for
+negative inputs. Klambauer et al.~\cite{klambauer2017}
+introduced SELU with self-normalising properties under
+specific conditions. Later work introduced
+GELU~\cite{hendrycks2016}, Swish~\cite{ramachandran2017},
+and Mish~\cite{misra2020}, while
+surveys~\cite{nwankpa2018,apicella2021} reviewed the growing
+range of activation functions. These developments motivate
+examining their effects in the dense layers following
+gated recurrent networks.
 
-Within sentiment analysis the IMDb dataset~\cite{maas2011} is the
-standard binary benchmark; Tang et al.~\cite{tang2015} validated
-GRU for document-level sentiment and Socher et
-al.~\cite{socher2013} contributed the SST treebank. Several
-studies addressed the activation question partially. Eger et
-al.~\cite{eger2018} compared 21 activations across NLP tasks but
-used basic architectures and predated Mish. Farzad et
-al.~\cite{farzad2019} swept 23 functions at the LSTM gate level on
-IMDb with no GRU or bidirectional variants. Essai Ali et
-al.~\cite{essaiAli2022} engineered 26 activations for LSTM, but
-outside sentiment and without GELU, Swish or Mish. Zhu and
-Tan~\cite{zhu2022} tested a custom activation on LSTM and GRU for
-IMDb against only ReLU and SELU. Ahmed et al.~\cite{ahmed2025}
-tested three classical pairings in a BiLSTM on IMDb, reached
-88.40\%, and called for broader architectures and modern
-functions.
+Within sentiment analysis, IMDb~\cite{maas2011} is a widely
+used binary classification benchmark. Tang et
+al.~\cite{tang2015} studied gated recurrent networks for
+document-level sentiment classification, and Socher et
+al.~\cite{socher2013} introduced the Stanford Sentiment
+Treebank. Several studies have examined activation choice.
+Eger et al.~\cite{eger2018} compared 21 activations across
+eight NLP tasks and also investigated alternative
+activations within LSTM cells. Farzad et
+al.~\cite{farzad2019} compared 23 activation functions in
+a basic LSTM network on IMDb, Movie Review, and MNIST.
+Essai Ali et al.~\cite{essaiAli2022} evaluated 26 state
+activation functions in LSTM networks on classification
+tasks outside sentiment analysis. Zhu and
+Tan~\cite{zhu2022} tested a custom activation in simple RNN,
+LSTM, and GRU models on IMDb, comparing it with ReLU,
+LeakyReLU, ELU, SELU, and tanh. Ahmed et
+al.~\cite{ahmed2025} compared three classical activation
+pairings in a bidirectional LSTM, reported 88.40\% accuracy,
+and suggested examining modern functions and other
+architectures.
 
-Four gaps remain open, and the fourth subsumes the others. No
-study has swept activation pairings exhaustively rather than
-testing a few hand-picked combinations. No study has compared
-across LSTM, GRU, and their fully bidirectional variants under
-identical conditions. No study has benchmarked GELU, SiLU, or Mish
-inside gated recurrent dense layers for sentiment classification.
+Our study brings these comparisons into a shared experimental
+design. We evaluate all 100 ordered pairs of ten activation
+functions in two dense layers across four architectures.
+These use LSTM or GRU cells, a bidirectional first recurrent
+layer, and either a unidirectional or bidirectional second
+layer. The comparison includes GELU, SiLU, and Mish, with
+the data split and training settings held fixed.
 
-Most importantly, \emph{none of the works above repeats any
-configuration}. Eger et al.~\cite{eger2018}, Farzad et
-al.~\cite{farzad2019}, Essai Ali et al.~\cite{essaiAli2022}, Zhu
-and Tan~\cite{zhu2022} and Ahmed et al.~\cite{ahmed2025} each
-report a single run per setting, and none reports a standard
-deviation, a confidence interval, or a seed. Their rankings are
-therefore single draws from a stochastic process whose spread is
-unknown. Reproducibility studies in other areas of deep learning
-have found such rankings to be fragile, but the question has not
-been put to activation functions in gated recurrent networks. This paper addresses all four gaps, and treats
-the fourth as its primary contribution.
-
+Repeated training is also part of earlier work. Eger et
+al.~\cite{eger2018} explicitly averaged results over five
+random weight initializations in their sentence-classification
+experiments. Our main contribution is therefore the analysis
+of how variation between training runs compares with the
+effects of architecture and dense-layer activation choice
+in this setting. We train every configuration with five
+seeds and examine whether rankings from one run agree with
+rankings based on repeated runs. This allows us to assess
+which performance differences are clear and which remain
+uncertain.
 \FloatBarrier
 \section{Methodology}
 %------------------------------------------------------------------------------
