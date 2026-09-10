@@ -1,0 +1,12 @@
+[ 5/50] ReLU       ETA 9.5m
+[10/50] ELU        ETA 8.5m
+[15/50] LeakyReLU  ETA 7.3m
+[20/50] Tanh       ETA 6.3m
+[25/50] GELU       ETA 5.3m
+[30/50] SiLU       ETA 4.2m
+[35/50] Mish       ETA 3.2m
+[40/50] SELU       ETA 2.1m
+[45/50] PReLU      ETA 1.0m
+[50/50] Hardswish  ETA 0.0m
+
+Done in 10.3 min -> results/convergence_curves_seeds10_50.csv
