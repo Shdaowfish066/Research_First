@@ -602,75 +602,69 @@ cheapest, joint most accurate and most stable of the four.
 \section{Discussion}
 \label{sec:discussion}
 
-\subsection{RQ1--RQ3: What Actually Moves Accuracy}
+\subsection{RQ1--RQ3: Architecture, Activation Choice and Training Seeds}
 
-We have not found a prior estimate of the variance split for gated
-recurrent networks. It sets a limit on what a single-run study can
-show: an effect worth 3.7\% of the variance cannot be read off a
-design whose noise is worth 58.7\%.
+Training seeds account for 58.7\% of the variation in test
+accuracy, compared with 26.7\% for architecture and 3.7\% for
+activation pairs. In this experiment, accuracy varies more
+between training runs than with either architecture or
+activation choice alone.
 
-The cell-type effect is large next to the noise, at $d=1.19$, and
-four seeds per cell are enough to detect it. It is also the one
-conclusion of the original single-seed design that replication
-leaves intact: the five-seed architecture means differ from the
-single-seed means by at most 0.18 points. Layer-2
-bidirectionality is the opposite case. It accounts for 0.19\% of
-the variance, and adds 0.13 points in LSTM ($p=0.017$) and 0.00
-points in GRU ($p=0.858$). In the GRU case, which is the faster and
-more accurate family, the extra parameters add nothing.
+GRU averages 0.79 percentage points above LSTM, with Cohen's
+$d=1.19$. Architecture means change by at most 0.18 points
+between the single-seed and five-seed results. Making the
+second recurrent layer bidirectional accounts for 0.19\% of
+the variance. It adds 0.13 points in LSTM ($p=0.017$), while
+the measured change in GRU rounds to 0.00 points ($p=0.858$).
+The GRU comparison therefore shows no clear accuracy gain
+from a bidirectional second layer.
 
-The activation pair separates from the noise only when many runs
-are averaged. Within BiGRU+GRU the 100 cell means span 0.69 points,
-while a single cell has a standard deviation of 0.33 across its
-seeds. Averages over ten partners therefore separate; individual
-pairs do not. The gap between the LSTM and GRU families, 0.79
-points, is larger than the whole 0.69-point span of activation
-choices inside GRU.
+Within BiGRU+GRU, the five-seed means of the 100 activation
+pairs span 0.69 percentage points. The median standard
+deviation across seeds is 0.33 points, showing that variation
+between runs is substantial compared with the differences
+between pairs. The full 0.69-point spread is also smaller
+than the 0.79-point gap between GRU and LSTM. These comparisons
+show a clearer difference between the two model families
+than between individual activation pairs.
 
-\subsection{RQ4: Single-Seed Rankings Do Not Reproduce}
+\subsection{RQ4: Agreement Between Single-Seed and Five-Seed Rankings}
 
-In all four architectures the single-seed and five-seed rankings of
-the 100 activation pairs are unrelated
-(Table~\ref{tab:reproducibility}).
+The two rankings show little agreement in all four architectures
+(Table~\ref{tab:reproducibility}). Their Spearman correlations range
+from $-0.174$ to $+0.055$, all close to zero. Activation pairs move
+32 to 37 places on average between the rankings. In each
+architecture, at most one pair from the original top ten remains
+in the top ten after averaging five runs.
 
-The models themselves are stable. Almost every run lands in a
-narrow band, and only one configuration in 400 failed to train
-reliably. The problem is the size of the gaps being ranked. Two
-pairs adjacent in the ranking differ by about 0.005 points, while a
-single pair varies by 0.29 to 0.53 points across its own five
-seeds. The noise is roughly eighty times the gap, so one run per
-pair sorts seeds rather than functions.
+The small accuracy gaps between pairs help explain these changes.
+Across architectures, the median standard deviation across seeds
+ranges from 0.29 to 0.53 percentage points. When accuracy gaps are
+small relative to this variation, changes between training runs
+can change the order of the pairs. Here, the ranking from one run
+gives little indication of the ranking based on five runs.
 
-\subsection{RQ5--RQ6: What Survives, and at What Cost}
+\subsection{RQ5--RQ6: Findings Across Seeds and Estimated Seed Counts}
 \label{sec:rq6}
 
-One activation effect survives cleanly: early convergence. Smooth
-functions reach 73.70\% validation accuracy after one epoch against
-61.05\% for the ReLU family, 2.9 times the seed standard deviation
-with the ordering preserved ($\rho=0.891$). Where the budget is
-measured in epochs, that is a reason to prefer Mish, GELU, SiLU or
-Hardswish. A second effect survives in weaker form: the GRU family
-is more stable, and every high-variance cell in the grid is
-LSTM-based. Reliability is rarely reported when architectures are
-compared; here it points the same way as accuracy. What does not
-survive is the identity of the best pair, the transfer or inversion
-of rankings across architectures, per-cell precision--recall
-behaviour, and any penalty for dense-layer ReLU.
-
-The number of seeds needed to resolve each effect follows from its
-size. Taking the median per-cell standard deviation of 0.38 points,
-at 80\% power and $\alpha=0.05$, detecting the 0.79-point
-architecture effect needs about \textbf{4} seeds per cell, which
-is why five were enough here. Separating the top-ranked cell from
-the tenth, a gap of 0.12 points, needs about \textbf{157} seeds per
-cell. Separating cells adjacent in the top ten needs several
-thousand. At the measured 13.4~s per run, the 157-seed case alone
-is about 230 GPU-hours for one architecture.
-
-This is the answer to which activation pair is best. It is not that
-the winner escaped us: the gaps are small enough that identifying
-one would take a budget far beyond what studies in this area spend,
-and naming a winner from a single run measures the seed.
+The clearest activation difference appears after the first epoch.
+Mish, GELU, SiLU and Hardswish average 73.70\% validation accuracy,
+compared with 61.05\% for ReLU, LeakyReLU and SELU. The 12.65-point
+gap is 2.9 times the median standard deviation across seeds.
+The single-seed and five-seed rankings are also similar
+($\rho=0.891$). This difference concerns early learning; final
+accuracy shows no clear separation. GRU models vary less between
+runs than LSTM models. All eight configurations with a standard
+deviation above one percentage point use LSTM.
+The estimated seed counts depend on the size of the accuracy gap.
+Using the median standard deviation of 0.38 percentage points,
+80\% power and $\alpha=0.05$, the 0.79-point gap between GRU and
+LSTM corresponds to about \textbf{4} seeds per configuration.
+The 0.12-point gap between the first- and tenth-ranked
+configurations corresponds to about \textbf{157}. These estimates
+are based on the observed variation. At 13.4~s per run, 157 seeds
+across 100 activation pairs correspond to about 58 GPU-hours
+for one architecture.
 
 \subsection{Limitations}
 
