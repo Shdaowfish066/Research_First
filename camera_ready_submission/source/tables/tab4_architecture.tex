@@ -1,23 +1,28 @@
 \begin{table}[htbp]
-  \caption{Cross-Experiment Accuracy over 2{,}000 Runs (500 per Experiment)}
+  \caption{Accuracy and Variation Across Seeds (2{,}000 Runs)}
   \label{tab:sweep_summary}
   \centering\footnotesize
   \setlength{\tabcolsep}{3pt}
   \renewcommand{\arraystretch}{1.1}
-  \resizebox{\columnwidth}{!}{%
-  \begin{tabular}{lccccc}
+  \begin{tabular}{@{}lccc@{}}
     \toprule
-    Experiment & Min\% & Max\% & Mean\% & 95\% CI & $\sigma_{\text{cell}}$ \\
+    Architecture & \shortstack{Mean\\accuracy (\%)}
+    & \shortstack{Range of pair\\means (\%)}
+    & \shortstack{Median SD\\(points)} \\
     \midrule
-    BiLSTM+LSTM & 82.06 & 87.16 & \textbf{86.62} & $\pm$0.10 & 0.53 \\
-    BiGRU+GRU & 87.12 & 87.81 & \textbf{87.48} & $\pm$0.03 & 0.33 \\
-    BiLSTM+BiLSTM & 86.07 & 87.14 & \textbf{86.75} & $\pm$0.05 & 0.48 \\
-    BiGRU+BiGRU & 87.14 & 87.73 & \textbf{87.48} & $\pm$0.03 & 0.29 \\
-    \midrule
-    \multicolumn{3}{l}{\textbf{Benchmark}~\cite{ahmed2025}} & \textbf{88.40} & --- & --- \\
+    BiLSTM+LSTM   & 86.62 & 82.06--87.16 & 0.53 \\
+    BiGRU+GRU     & 87.48 & 87.12--87.81 & 0.33 \\
+    BiLSTM+BiLSTM & 86.75 & 86.07--87.14 & 0.48 \\
+    BiGRU+BiGRU   & 87.48 & 87.14--87.73 & 0.29 \\
     \bottomrule
-    \multicolumn{6}{l}{\small Min/Max are over the 100 cell means; $\sigma_{\text{cell}}$ is the median} \\
-    \multicolumn{6}{l}{\small per-cell standard deviation across the five seeds.} \\
-  \end{tabular}%
+  \end{tabular}
+
+  \vspace{4pt}
+  \parbox{\columnwidth}{\scriptsize
+    Each architecture mean averages 500 runs. The range covers
+    its 100 activation-pair means, each averaged over five
+    seeds. SD is calculated across those five seeds; the last
+    column gives the median SD over the 100 pairs, in
+    percentage points.
   }
 \end{table}

@@ -1,21 +1,27 @@
 \begin{table}[htbp]
-  \caption{Variance Decomposition of Test Accuracy (2{,}000 Runs)}
+  \caption{Sources of Variation in Test Accuracy (2{,}000 Runs)}
   \label{tab:variance}
   \centering\footnotesize
   \setlength{\tabcolsep}{4pt}
   \renewcommand{\arraystretch}{1.08}
-  \begin{tabular}{lr}
+  \begin{tabular}{@{}lr@{}}
     \toprule
     Source of variation & \% of total variance \\
     \midrule
-    Architecture (4 levels) & 26.69 \\
-    \quad cell type (GRU vs.\ LSTM) & 26.32 \\
-    \quad layer-2 bidirectionality & 0.19 \\
-    Act$_1$ (10 levels) & 0.53 \\
-    Act$_2$ (10 levels) & 0.55 \\
-    Act$_1\times$Act$_2$ pair (100 levels) & 3.74 \\
+    Architecture (4 types) & 26.69 \\
+    Activation pair (100 pairs) & 3.74 \\
+    Architecture--activation interaction & 10.90 \\
+    Training seed (within configuration) & 58.67 \\
     \midrule
-    \textbf{Seed (residual)} & \textbf{58.67} \\
+    \textbf{Total} & \textbf{100.00} \\
     \bottomrule
   \end{tabular}
+
+  \vspace{4pt}
+  \parbox{\columnwidth}{\scriptsize
+    Each configuration uses one architecture and one activation
+    pair. Seed variation is measured across its five training
+    runs. The interaction measures how differences between
+    activation pairs change across architectures.
+  }
 \end{table}
