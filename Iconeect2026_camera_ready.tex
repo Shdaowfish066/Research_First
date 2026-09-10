@@ -248,36 +248,49 @@ which performance differences are clear and which remain
 uncertain.%heyyy
 \FloatBarrier
 \section{Methodology}
-%------------------------------------------------------------------------------
+
 \subsection{Dataset and Preprocessing}
 
-The IMDb Large Movie Review Dataset~\cite{maas2011} (50,000
-reviews, balanced binary labels) was split 80/20 train-test
-with \texttt{random\_state=42}, and 10\% of
-training data was withheld as a validation set. Reviews were
-cleaned by removing HTML tags and non-alphabetic characters,
-then lowercased. A vocabulary of the 5,000 most frequent
-training-set tokens was used; all sequences were truncated or
-zero-padded to 200 tokens.
+The IMDb Large Movie Review Dataset~\cite{maas2011}
+contains 50{,}000 reviews with balanced positive and negative
+labels. We divided the dataset into 80\% training data and
+20\% test data using \texttt{random\_state=42}. We then
+reserved 10\% of the training portion for validation,
+giving 36{,}000 training, 4{,}000 validation, and
+10{,}000 test reviews.
+
+Reviews were cleaned by removing HTML tags and
+non-alphabetic characters, then converting the text to
+lowercase. The vocabulary contained the 5{,}000 most
+frequent tokens in the training set. Each review was
+truncated or zero-padded to a length of 200 tokens.
 
 \subsection{Network Architecture}
 
-Every model shares one backbone: an embedding
-layer (vocabulary 5,000, dimension 128), a bidirectional
-recurrent Layer~1 (64 units per direction), a recurrent
-Layer~2 (32 units per direction), Dropout(0.4), Dense Layer~1
-(64 units) with Act$_1$, Dense Layer~2 (32 units) with
-Act$_2$, and a single output unit trained with
-\texttt{BCEWithLogitsLoss}. Two architectural factors are
-varied on top of it: the recurrent cell type (LSTM or GRU)
-and whether Layer~2 is bidirectional. Crossing them gives the
-four backbones of Table~\ref{tab:architectures}, referred to
-throughout as BiLSTM+LSTM, BiGRU+GRU, BiLSTM+BiLSTM and
-BiGRU+BiGRU; the dense-layer activation pair (Act$_1$,
-Act$_2$) is swept within each.
+All models followed the same overall structure: an embedding
+layer, two recurrent layers, a dropout layer, two dense layers,
+and a single output unit. The embedding layer used a vocabulary
+of 5{,}000 tokens and produced 128-dimensional vectors.
+The first recurrent layer was bidirectional, with 64 units
+per direction. The second recurrent layer contained
+32 units per direction and was either unidirectional
+or bidirectional.
+
+The recurrent layers were followed by dropout with a rate
+of 0.4. The two dense layers contained 64 and 32 units,
+with activation functions denoted by Act$_1$ and Act$_2$,
+respectively. The output layer produced a single logit,
+and the model was trained using \texttt{BCEWithLogitsLoss}.
+
+We varied two architectural features: the recurrent cell
+type, LSTM or GRU, and the directionality of the second
+recurrent layer. This produced the four architectures
+listed in Table~\ref{tab:architectures}. Within each
+architecture, we evaluated every ordered combination
+of Act$_1$ and Act$_2$.
 
 \begin{table}[htbp]
-  \caption{The Four Recurrent Backbones}
+  \caption{Recurrent Architectures Evaluated}
   \label{tab:architectures}
   \centering
   \footnotesize
@@ -285,99 +298,103 @@ Act$_2$) is swept within each.
   \renewcommand{\arraystretch}{1.08}
   \begin{tabular}{cllr}
     \toprule
-    Exp. & Layer 1 & Layer 2 & Params \\
+    Exp. & Layer 1 & Layer 2 & Parameters \\
     \midrule
-    1 & BiLSTM(64) & LSTM(32)    & ${\approx}$764K \\
-    2 & BiGRU(64)  & GRU(32)     & ${\approx}$734K \\
-    3 & BiLSTM(64) & BiLSTM(32)  & ${\approx}$787K \\
-    4 & BiGRU(64)  & BiGRU(32)   & ${\approx}$752K \\
+    1 & BiLSTM(64) & LSTM(32)   & ${\approx}$764K \\
+    2 & BiGRU(64)  & GRU(32)    & ${\approx}$734K \\
+    3 & BiLSTM(64) & BiLSTM(32) & ${\approx}$787K \\
+    4 & BiGRU(64)  & BiGRU(32)  & ${\approx}$752K \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\subsection{Activation Functions Under Investigation}
+\subsection{Activation Functions}
 
-Ten activation functions were evaluated
-(Table~\ref{tab:activations}). The classical family is
-ReLU~\cite{nair2010}, LeakyReLU~\cite{maas2013},
-PReLU~\cite{he2015}, ELU~\cite{clevert2015}, Tanh and
-SELU~\cite{klambauer2017}. The modern smooth family is
-GELU~\cite{hendrycks2016}, SiLU (Swish)~\cite{ramachandran2017},
-Mish~\cite{misra2020} and Hardswish~\cite{howard2019}.
+We evaluated ten activation functions:
+ReLU~\cite{nair2010},
+LeakyReLU~\cite{maas2013},
+PReLU~\cite{he2015},
+ELU~\cite{clevert2015},
+tanh,
+SELU~\cite{klambauer2017},
+GELU~\cite{hendrycks2016},
+SiLU (Swish)~\cite{ramachandran2017},
+Mish~\cite{misra2020}, and
+Hardswish~\cite{howard2019}.
+Table~\ref{tab:activations} summarises their main properties.
+
+Each function was tested in both dense-layer positions,
+giving $10\times10=100$ ordered pairs per architecture.
+Only the dense-layer activations were changed; the
+activations within the recurrent cells remained fixed.
 
 \begin{table}[htbp]
-  \caption{Activation Functions: Families and Key Properties}
+  \caption{Activation Functions and Key Properties}
   \label{tab:activations}
-  \centering\footnotesize
+  \centering
+  \footnotesize
   \setlength{\tabcolsep}{3pt}
   \renewcommand{\arraystretch}{1.05}
   \resizebox{\columnwidth}{!}{%
-  \begin{tabular}{lll}
+  \begin{tabular}{ll}
     \toprule
-    Function & Type & Formula / Key Property \\
+    Function & Formula or Key Property \\
     \midrule
-    ReLU      & Classical & $\max(0,x)$; dead neurons for $x{<}0$ \\
-    ELU       & Classical & $\alpha(e^x{-}1)$ for $x{\leq}0$; mean-centering \\
-    LeakyReLU & Classical & $0.01x$ for $x{<}0$; low dead-neuron risk \\
-    Tanh      & Classical & Bounded; saturates for $|x|\gg1$ \\
-    GELU      & Modern & $x\cdot\Phi(x)$; probabilistic gating \\
-    SiLU      & Modern & $x\cdot\sigma(x)$; self-gating \\
-    Mish      & Modern & $x\cdot\tanh(\text{softplus}(x))$; smooth \\
-    SELU      & Modern & Self-normalising; implicit batch norm \\
-    PReLU     & Modern & Learnable slope $a$; input-dependent \\
-    Hardswish & Modern & Piecewise; dead zone for $x{<}{-3}$ \\
+    ReLU
+      & $\max(0,x)$; zero gradient for $x<0$ \\
+    ELU
+      & $\alpha(e^x-1)$ for $x\leq0$; $x$ otherwise \\
+    LeakyReLU
+      & $0.01x$ for $x<0$; $x$ otherwise \\
+    Tanh
+      & $\tanh(x)$; bounded between $-1$ and $1$ \\
+    GELU
+      & $x\Phi(x)$; smooth activation \\
+    SiLU
+      & $x\sigma(x)$; sigmoid-weighted input \\
+    Mish
+      & $x\tanh(\operatorname{softplus}(x))$; smooth \\
+    SELU
+      & Scaled ELU; self-normalising under specific conditions \\
+    PReLU
+      & $ax$ for $x<0$; learnable slope $a$ \\
+    Hardswish
+      & $x\operatorname{ReLU6}(x+3)/6$; piecewise approximation to SiLU \\
     \bottomrule
   \end{tabular}%
   }
 \end{table}
 
+Here, $\Phi(x)$ denotes the standard normal cumulative
+distribution function and $\sigma(x)$ denotes the
+logistic sigmoid function.
+
 \subsection{Training Configuration and Evaluation}
 
-Every setting in Table~\ref{tab:hyperparams} was held fixed
-across all 2{,}000 runs, so that within a backbone only the
-activation pair and the random seed vary. The architecture
-parameters (vocabulary, embedding, layer sizes, dropout)
-replicate Ahmed et al.~\cite{ahmed2025} exactly. The training
-parameters (optimizer, learning rate, batch size, scheduler,
-clipping) are ours, as Ahmed et al. did not report them.
-After training, accuracy, precision, recall and
-F1-score were measured on the held-out 10,000-review test set.
+All configurations used the training settings listed in
+Table~\ref{tab:hyperparams}. Within each architecture,
+only the activation pair and training seed varied.
+The vocabulary size, sequence length, embedding dimension,
+and layer sizes followed the corresponding settings
+described by Ahmed et al.~\cite{ahmed2025}. We specified
+the optimiser, learning rate, batch size, scheduling,
+and gradient clipping for our experiments.
 
-\subsection{Experimental Design and Replication Protocol}
-\label{sec:replication}
+Models were trained with Adam at an initial learning rate
+of $10^{-3}$ and a batch size of 64, for a maximum of
+10 epochs. Early stopping used a patience of three epochs
+based on validation loss. A ReduceLROnPlateau scheduler
+reduced the learning rate by a factor of 0.5, and the
+$L_2$ norm of the gradients was clipped to 1.0.
 
-The design is a full factorial: the four backbones crossed with
-all $10\times10 = 100$ ordered activation pairs give $400$
-configurations, and every one of them is retrained under five
-seeds, $\{10,20,30,40,50\}$, for $2{,}000$ models in total. The
-seed is applied immediately before the model and its data
-loaders are constructed, setting \texttt{random}, \texttt{numpy},
-\texttt{torch} and \texttt{torch.cuda} with
-\texttt{cudnn.deterministic=True}, so a given (backbone, pair,
-seed) is exactly reproducible. Runs were executed five at a
-time, one process per seed; sampled configurations re-run
-serially gave identical metrics.
-
-The split is deliberately \emph{not} a function of the seed: it
-stays pinned at \texttt{random\_state=42}. The variance we report
-is therefore that of retraining the same model on the same
-data --- the quantity a single-run comparison assumes to be
-negligible. Split variance would only inflate it, so these
-estimates are conservative. We attribute it by partitioning the
-total sum of squares of test accuracy over the 2{,}000 runs among
-the backbone, Act$_1$, Act$_2$, the Act$_1\times$Act$_2$
-interaction, and a residual equal to the pooled within-cell
-seed variation.
-
-The sweep records only final accuracy, so convergence speed is
-measured in a separate re-run: the ten homogeneous pairs (X+X)
-on BiGRU+GRU, logged per epoch under five seeds; the homogeneous
-pairing isolates each activation without a partner confound.
+After training, each model was evaluated on the held-out
+test set using accuracy, precision, recall, and F1-score.
 
 \begin{table}[htbp]
   \caption{Shared Hyperparameter Configuration}
   \label{tab:hyperparams}
-  \centering\footnotesize
+  \centering
+  \footnotesize
   \setlength{\tabcolsep}{3pt}
   \renewcommand{\arraystretch}{1.05}
   \resizebox{\columnwidth}{!}{%
@@ -385,36 +402,102 @@ pairing isolates each activation without a partner confound.
     \toprule
     Hyperparameter & Value & Source \\
     \midrule
-    Vocab / Seq.\ length / Embed. & 5{,}000 / 200 / 128 & \cite{ahmed2025} \\
-    RNN Layer 1 / Layer 2 units   & 64 / 32 per direction & \cite{ahmed2025} \\
-    Dense Layer 1 / Layer 2 units & 64 / 32 & \cite{ahmed2025} \\
-    Dropout rate                  & 0.4 & \cite{ahmed2025} \\
-    Batch size / Max epochs       & 64 / 10 & Ours \\
-    Early stopping patience       & 3 epochs (val.\ loss) & Ours \\
-    Optimiser                     & Adam, $\text{lr}=10^{-3}$ & Ours \\
-    LR scheduler                  & ReduceLROnPlateau ($\times$0.5) & Ours \\
-    Loss / Gradient clipping      & BCEWithLogitsLoss / $L_2\leq1.0$ & Ours \\
-    Weight initialisation         & Kaiming uniform (Linear) & PyTorch default \\
-    Data split seed               & 42, fixed for all runs & Ours \\
-    Training seeds                & 10, 20, 30, 40, 50 & Ours \\
+    Vocabulary / Sequence length / Embedding
+      & 5{,}000 / 200 / 128 & \cite{ahmed2025} \\
+    Recurrent Layer 1 / Layer 2 units
+      & 64 / 32 per direction & \cite{ahmed2025} \\
+    Dense Layer 1 / Layer 2 units
+      & 64 / 32 & \cite{ahmed2025} \\
+    Dropout after recurrent layers
+      & 0.4 & This study \\
+    Batch size / Maximum epochs
+      & 64 / 10 & This study \\
+    Early stopping patience
+      & 3 epochs (validation loss) & This study \\
+    Optimiser
+      & Adam, $\mathrm{lr}=10^{-3}$ & This study \\
+    Learning-rate scheduler
+      & ReduceLROnPlateau ($\times0.5$) & This study \\
+    Loss / Gradient clipping
+      & BCEWithLogitsLoss / $L_2\leq1.0$ & This study \\
+    Linear-layer initialisation
+      & PyTorch default & PyTorch \\
+    Data split seed
+      & 42, fixed across runs & This study \\
+    Training seeds
+      & 10, 20, 30, 40, 50 & This study \\
     \bottomrule
   \end{tabular}%
   }
 \end{table}
 
-\subsection{On Reproducing the Baseline of Ahmed et al.}
+\subsection{Experimental Design and Replication Protocol}
+\label{sec:replication}
+
+The experiment combined four architectures with all
+100 ordered activation pairs, giving 400 configurations.
+Each configuration was trained with five random seeds,
+$\{10,20,30,40,50\}$, producing 2{,}000 models in the
+main experiment.
+
+Before constructing each model and its data loaders,
+we set the random seed for \texttt{random},
+\texttt{numpy}, \texttt{torch}, and \texttt{torch.cuda}.
+We also enabled \texttt{cudnn.deterministic=True}.
+Five runs were executed concurrently, with one process
+per seed. To check reproducibility in our computing
+environment, we repeated selected configurations
+sequentially and obtained identical evaluation metrics.
+
+The data split remained fixed at
+\texttt{random\_state=42} throughout the experiment.
+The reported variation therefore reflects repeated
+training on the same data split and does not include
+variation caused by changing the split.
+
+We analysed test accuracy across the 2{,}000 runs to
+examine the effects of architecture, Act$_1$, Act$_2$,
+and the interaction between the two activation choices.
+Variation between repeated runs was measured within
+each architecture--activation configuration and pooled
+across configurations.
+
+% Author check: State the exact sum-of-squares decomposition
+% used in the analysis code. A model containing only architecture,
+% Act1, Act2, and Act1-by-Act2 does not generally have a residual
+% equal to pooled within-configuration seed variation; omitted
+% architecture-by-activation interactions also contribute.
+
+To examine convergence, we conducted an additional
+50 runs using the ten pairs in which both dense layers
+used the same activation function (X+X). Each pair was
+trained on BiGRU+GRU with five seeds, with validation
+metrics recorded after every epoch. This comparison
+measured learning behaviour when the same activation
+was used in both dense layers.
+
+\subsection{Comparison with Ahmed et al.}
 \label{sec:baseline_repro}
 
-Ahmed et al.~\cite{ahmed2025} describe their architecture in full
-and we copy it exactly, but they do not report how they trained
-it: optimizer, learning rate, batch size, epochs, early stopping,
-seed and data split are all missing. Exact reproduction is
-therefore impossible, and we adopt the fully documented settings
-of Table~\ref{tab:hyperparams} instead. Their 88.40\% is a single
-run reported without a seed or a standard deviation, so we treat
-it as a reference point rather than a target and compare it
-against our replicated means in Section~\ref{sec:results}.
-%------------------------------------------------------------------------------
+Our models were informed by the architecture described
+by Ahmed et al.~\cite{ahmed2025}, but the implementations
+are not identical. Their paper describes dropout and
+recurrent dropout within the LSTM layers, whereas our
+models use a dropout layer after the recurrent layers.
+Our study also extends the comparison to GRU models
+and architectures with a bidirectional second layer.
+
+The baseline paper does not specify several training
+details, including the optimiser, learning rate, batch
+size, training seed, and exact data split. We therefore
+used the settings in Table~\ref{tab:hyperparams}.
+Its reported accuracy of 88.40\% is treated as an
+external reference rather than a directly reproduced
+baseline. The paper does not state a repeated-run
+protocol or report uncertainty across training seeds.
+We compare its reported score with our repeated-run
+averages in Section~\ref{sec:results}.
+
 \FloatBarrier\section{Results}
 \label{sec:results}
 
