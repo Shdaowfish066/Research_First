@@ -262,21 +262,22 @@ zero-padded to 200 tokens.
 
 \subsection{Network Architecture}
 
-All four experiments share the same model structure. The
-only thing that changes within each experiment is the choice of
-Act$_1$ and Act$_2$ in the two dense layers. The shared architecture
-is: an embedding layer
-(vocabulary 5,000, dimension 128), a bidirectional recurrent
-Layer~1 (64 units per direction), a recurrent Layer~2 (32
-units per direction), Dropout(0.4), Dense Layer~1 (64 units)
-with Act$_1$, Dense Layer~2 (32 units) with Act$_2$, and a
-single output unit trained with \texttt{BCEWithLogitsLoss}.
-The four experiments differ only in the recurrent cell type
-(LSTM, GRU) and whether Layer 2
-is bidirectional (Table~\ref{tab:architectures}).
+Every model shares one backbone: an embedding
+layer (vocabulary 5,000, dimension 128), a bidirectional
+recurrent Layer~1 (64 units per direction), a recurrent
+Layer~2 (32 units per direction), Dropout(0.4), Dense Layer~1
+(64 units) with Act$_1$, Dense Layer~2 (32 units) with
+Act$_2$, and a single output unit trained with
+\texttt{BCEWithLogitsLoss}. Two architectural factors are
+varied on top of it: the recurrent cell type (LSTM or GRU)
+and whether Layer~2 is bidirectional. Crossing them gives the
+four backbones of Table~\ref{tab:architectures}, referred to
+throughout as BiLSTM+LSTM, BiGRU+GRU, BiLSTM+BiLSTM and
+BiGRU+BiGRU; the dense-layer activation pair (Act$_1$,
+Act$_2$) is swept within each.
 
 \begin{table}[htbp]
-  \caption{Experimental Architecture Summary}
+  \caption{The Four Recurrent Backbones}
   \label{tab:architectures}
   \centering
   \footnotesize
@@ -302,9 +303,7 @@ ReLU~\cite{nair2010}, LeakyReLU~\cite{maas2013},
 PReLU~\cite{he2015}, ELU~\cite{clevert2015}, Tanh and
 SELU~\cite{klambauer2017}. The modern smooth family is
 GELU~\cite{hendrycks2016}, SiLU (Swish)~\cite{ramachandran2017},
-Mish~\cite{misra2020} and Hardswish~\cite{howard2019}. The latter
-four had not previously been benchmarked in gated recurrent dense
-layers for sentiment classification.
+Mish~\cite{misra2020} and Hardswish~\cite{howard2019}.
 
 \begin{table}[htbp]
   \caption{Activation Functions: Families and Key Properties}
@@ -334,39 +333,46 @@ layers for sentiment classification.
 
 \subsection{Training Configuration and Evaluation}
 
-Every setting in Table~\ref{tab:hyperparams} was held the
-same across all runs, so the activation pair is the only
-thing that changes between models. The architecture parameters
-(vocabulary, embedding, layer sizes, dropout) replicate
-Ahmed et al.~\cite{ahmed2025} exactly. The training parameters
-(optimizer, learning rate, batch size, scheduler, clipping)
-were chosen by us because Ahmed et al. did not report them.
-After training, accuracy, precision, recall, and F1-score were
-measured on the held-out 10,000-review test set.
+Every setting in Table~\ref{tab:hyperparams} was held fixed
+across all 2{,}000 runs, so that within a backbone only the
+activation pair and the random seed vary. The architecture
+parameters (vocabulary, embedding, layer sizes, dropout)
+replicate Ahmed et al.~\cite{ahmed2025} exactly. The training
+parameters (optimizer, learning rate, batch size, scheduler,
+clipping) are ours, as Ahmed et al. did not report them.
+After training, accuracy, precision, recall and
+F1-score were measured on the held-out 10,000-review test set.
 
-\subsection{Replication Protocol}
+\subsection{Experimental Design and Replication Protocol}
 \label{sec:replication}
 
-Each of the $10\times10\times4 = 400$ configurations was trained
-under five seeds, $\{10,20,30,40,50\}$, giving $2{,}000$ models.
-The seed is applied immediately before the model and its data
+The design is a full factorial: the four backbones crossed with
+all $10\times10 = 100$ ordered activation pairs give $400$
+configurations, and every one of them is retrained under five
+seeds, $\{10,20,30,40,50\}$, for $2{,}000$ models in total. The
+seed is applied immediately before the model and its data
 loaders are constructed, setting \texttt{random}, \texttt{numpy},
 \texttt{torch} and \texttt{torch.cuda} with
-\texttt{cudnn.deterministic=True}, so a given (pair, seed) is
-exactly reproducible.
+\texttt{cudnn.deterministic=True}, so a given (backbone, pair,
+seed) is exactly reproducible. Runs were executed five at a
+time, one process per seed; sampled configurations re-run
+serially gave identical metrics.
 
 The split is deliberately \emph{not} a function of the seed: it
 stays pinned at \texttt{random\_state=42}. The variance we report
-is therefore the variance of retraining the same model on the same
-data. That is the quantity a single-run comparison assumes to be
+is therefore that of retraining the same model on the same
+data --- the quantity a single-run comparison assumes to be
 negligible. Split variance would only inflate it, so these
-estimates are conservative.
+estimates are conservative. We attribute it by partitioning the
+total sum of squares of test accuracy over the 2{,}000 runs among
+the backbone, Act$_1$, Act$_2$, the Act$_1\times$Act$_2$
+interaction, and a residual equal to the pooled within-cell
+seed variation.
 
-Runs were executed five at a time, one worker per seed. Each
-worker is a separate process with its own RNG and deterministic
-kernel selection, so concurrency cannot perturb a result; we
-confirmed this by re-running sampled configurations serially and
-recovering identical metrics.
+The sweep records only final accuracy, so convergence speed is
+measured in a separate re-run: the ten homogeneous pairs (X+X)
+on BiGRU+GRU, logged per epoch under five seeds; the homogeneous
+pairing isolates each activation without a partner confound.
 
 \begin{table}[htbp]
   \caption{Shared Hyperparameter Configuration}
@@ -403,18 +409,11 @@ Ahmed et al.~\cite{ahmed2025} describe their architecture in full
 and we copy it exactly, but they do not report how they trained
 it: optimizer, learning rate, batch size, epochs, early stopping,
 seed and data split are all missing. Exact reproduction is
-therefore impossible, and we adopt the fully documented settings of
-Table~\ref{tab:hyperparams} instead.
-
-Replication sharpens what can be said about their 88.40\%. Our best
-configuration averages 87.81\% with a 95\% upper bound of 88.01\%,
-and no run among the 2{,}000 reached 88.40\% (maximum 88.39\%), so
-the benchmark sits outside the interval of our strongest setting.
-Since they report a single run without a seed or standard
-deviation, and we measure the per-cell standard deviation of this
-model family at 0.38 points, their figure is best read as one draw
-of unknown uncertainty. We treat it as a reference point, not a
-target.
+therefore impossible, and we adopt the fully documented settings
+of Table~\ref{tab:hyperparams} instead. Their 88.40\% is a single
+run reported without a seed or a standard deviation, so we treat
+it as a reference point rather than a target and compare it
+against our replicated means in Section~\ref{sec:results}.
 %------------------------------------------------------------------------------
 \FloatBarrier
 \section{Results}
