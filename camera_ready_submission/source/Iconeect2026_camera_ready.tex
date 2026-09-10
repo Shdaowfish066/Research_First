@@ -674,50 +674,40 @@ architectural conclusions, but leave per-cell intervals wide
 relative to the differences between cells, so individual cell means
 should be read with their intervals attached.
 
-\FloatBarrier
 \section{Conclusion}
 
-We trained 2{,}000 models: all 100 ordered pairs of ten activation
-functions, in four gated recurrent architectures, each replicated
-under five seeds. The question was not which activation function
-wins, but whether that question is answerable as it is usually
-posed.
+We trained 2{,}000 models, testing 100 activation pairs across
+four recurrent architectures with five seeds each. Training
+seeds accounted for 58.7\% of the variation in test accuracy,
+compared with 26.7\% for architecture and 3.7\% for activation
+pairs.
 
-Five findings follow. \emph{First}, the random seed explains
-58.7\% of the variance in test accuracy, the architecture 26.7\%,
-and the activation pair 3.7\%: seed variation dominates every
-controlled factor combined. \emph{Second}, single-seed rankings of
-activation pairs do not reproduce. Across four independently swept
-architectures the correlation between the single-seed ordering of
-100 cells and their replicated means is $-0.174$, $-0.059$,
-$-0.041$ and $+0.055$, with average rank movement above 32 places.
-The ten best configurations of 400 span 0.12 points against
-intervals up to $\pm$0.50, making them statistically
-indistinguishable. \emph{Third}, the architectural
-conclusion is large and robust: GRU exceeds LSTM by 0.79 points
-($p\approx2\times10^{-125}$, $d=1.19$) and supplies all fifty
-highest-scoring configurations, while layer-2 bidirectionality
-contributes 0.19\% of variance and nothing measurable for GRU.
-\emph{Fourth}, GRU is also the more reliable family, with about
-40\% lower seed-to-seed standard deviation, and all eight
-high-variance cells in the grid are LSTM-based. \emph{Fifth}, one
-activation effect survives replication: smooth functions reach
-73.70\% validation accuracy after one epoch against 61.05\% for
-the ReLU family, 2.9 times the seed standard deviation. The
-identity of the best pair, the cross-architecture inversion of
-rankings, and the dead-neuron penalty for dense-layer ReLU do not.
+Our main contribution is showing how repeated training changes
+the conclusions of an activation comparison. Earlier studies
+discussed in this paper reported rankings from single runs.
+In our experiments, those rankings showed little agreement
+with five-run rankings, moving more than 32 places on average.
+This challenges the use of a single run as evidence that one
+activation pair is better than another.
 
-For practitioners: choose GRU, prefer a smooth activation if the
-budget is measured in epochs, and do not tune the pair further. For
-the field: report variance.
+Architecture differences were clearer. GRU exceeded LSTM by
+0.79 percentage points, supplied all fifty highest-scoring
+configurations, and showed about 40\% lower standard deviation
+across seeds. Making the second GRU layer bidirectional added
+no measurable accuracy benefit.
 
-Future work should test whether this variance split holds on other
-sentiment corpora. SST-2 and Amazon Reviews are the natural next
-targets, and would establish whether the architectural advantage
-generalises across domains. The same question applies to
-attention-based models, where activation choice in feed-forward
-blocks follows the same single-run reporting convention.
+Activation choice mainly affected early learning. Mish, GELU,
+SiLU and Hardswish averaged 73.70\% validation accuracy after
+one epoch, compared with 61.05\% for ReLU, LeakyReLU and SELU.
+Their early advantage did not produce a clear difference in
+final test accuracy.
 
+Under our IMDb settings, architecture choice deserves more
+attention than small differences between activation pairs.
+More broadly, claims of better performance should be supported
+by repeated runs and reported uncertainty. Future work should
+test these findings on other datasets, different data splits,
+and attention-based models.
 
 {\footnotesize
 \begin{thebibliography}{23}
