@@ -1,0 +1,26 @@
+\begin{table}[htbp]
+  \caption{Epoch-1 Convergence on BiGRU+GRU, Independent Seeds (10, 20, 30, 40, 50)}
+  \label{tab:convergence_ind}
+  \centering\footnotesize
+  \renewcommand{\arraystretch}{1.05}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lccc}
+    \toprule
+    Activation & Val.\ loss (E1) & Val.\ acc.\ (E1)\% & $\sigma$ \\
+    \midrule
+    SiLU & 0.566 & \textbf{71.42} & 2.57 \\
+    Mish & 0.575 & 70.88 & 5.96 \\
+    Hardswish & 0.569 & 70.29 & 7.82 \\
+    PReLU & 0.577 & 69.49 & 9.16 \\
+    ELU & 0.629 & 65.01 & 5.72 \\
+    Tanh & 0.646 & 62.40 & 7.67 \\
+    ReLU & 0.649 & 61.91 & 7.44 \\
+    GELU & 0.646 & 61.26 & 10.39 \\
+    LeakyReLU & 0.664 & 59.48 & 4.67 \\
+    SELU & 0.670 & 58.78 & 3.39 \\
+    \bottomrule
+    \multicolumn{4}{l}{\small Smooth family (Mish, GELU, SiLU, Hardswish) averages 68.46\%;} \\
+    \multicolumn{4}{l}{\small the ReLU family (ReLU, LeakyReLU, SELU) averages 60.06\%.} \\
+  \end{tabular}%
+  }
+\end{table}
