@@ -41,3 +41,10 @@ Paper/
 
 # PyTorch model checkpoints (large binary files)
 results/**/*.pt
+
+# Downloaded/encoded Amazon corpora (regenerable: download_amazon.py,
+# then amazon_polarity_sweep.py --prepare). cache/sweep_data/ is the
+# IMDb cache and stays tracked, as it has been since 86a6610.
+cache/amazon/
+cache/amazon_encoded/
+cache/amazon_encoded_leftpad/
