@@ -1,0 +1,222 @@
+\FloatBarrier
+\section{Methodology}
+%------------------------------------------------------------------------------
+\subsection{Dataset and Preprocessing}
+
+The IMDb Large Movie Review Dataset~\cite{maas2011} (50,000
+reviews, balanced binary labels) was split 80/20 train-test
+with \texttt{random\_state=42}, and 10\% of
+training data was withheld as a validation set. Reviews were
+cleaned by removing HTML tags and non-alphabetic characters,
+then lowercased. A vocabulary of the 5,000 most frequent
+training-set tokens was used; all sequences were truncated or
+zero-padded to 200 tokens (Table~\ref{tab:hyperparams}).
+
+\subsection{Network Architecture}
+
+All four experiments share the same model structure. The
+only thing that changes within each experiment is the choice of
+Act$_1$ and Act$_2$ in the two dense layers. The shared architecture
+is: an embedding layer
+(vocabulary 5,000, dimension 128), a bidirectional recurrent
+Layer~1 (64 units per direction), a recurrent Layer~2 (32
+units per direction), Dropout(0.4), Dense Layer~1 (64 units)
+with Act$_1$, Dense Layer~2 (32 units) with Act$_2$, and a
+single output unit trained with \texttt{BCEWithLogitsLoss}.
+The four experiments differ only in the recurrent cell type
+(LSTM, GRU) and whether Layer 2
+is bidirectional (Table~\ref{tab:architectures}).
+
+\begin{table}[htbp]
+  \caption{Experimental Architecture Summary}
+  \label{tab:architectures}
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabular}{cllr}
+    \toprule
+    Exp. & Layer 1 & Layer 2 & Params \\
+    \midrule
+    1 & BiLSTM(64) & LSTM(32)    & ${\approx}$764K \\
+    2 & BiGRU(64)  & GRU(32)     & ${\approx}$734K \\
+    3 & BiLSTM(64) & BiLSTM(32)  & ${\approx}$787K \\
+    4 & BiGRU(64)  & BiGRU(32)   & ${\approx}$752K \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Activation Functions Under Investigation}
+
+Ten activation functions were evaluated
+(Table~\ref{tab:activations}). The classical family is
+ReLU~\cite{nair2010}, LeakyReLU~\cite{maas2013},
+PReLU~\cite{he2015}, ELU~\cite{clevert2015}, Tanh and
+SELU~\cite{klambauer2017}. The modern smooth family is
+GELU~\cite{hendrycks2016}, SiLU (Swish)~\cite{ramachandran2017},
+Mish~\cite{misra2020} and Hardswish~\cite{howard2019}. The latter
+four had not previously been benchmarked in gated recurrent dense
+layers for sentiment classification.
+
+\begin{table}[htbp]
+  \caption{Activation Functions: Families and Key Properties}
+  \label{tab:activations}
+  \centering\footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.05}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lll}
+    \toprule
+    Function & Type & Formula / Key Property \\
+    \midrule
+    ReLU      & Classical & $\max(0,x)$; dead neurons for $x{<}0$ \\
+    ELU       & Classical & $\alpha(e^x{-}1)$ for $x{\leq}0$; mean-centering \\
+    LeakyReLU & Classical & $0.01x$ for $x{<}0$; low dead-neuron risk \\
+    Tanh      & Classical & Bounded; saturates for $|x|\gg1$ \\
+    GELU      & Modern & $x\cdot\Phi(x)$; probabilistic gating \\
+    SiLU      & Modern & $x\cdot\sigma(x)$; self-gating \\
+    Mish      & Modern & $x\cdot\tanh(\text{softplus}(x))$; smooth \\
+    SELU      & Modern & Self-normalising; implicit batch norm \\
+    PReLU     & Modern & Learnable slope $a$; input-dependent \\
+    Hardswish & Modern & Piecewise; dead zone for $x{<}{-3}$ \\
+    \bottomrule
+  \end{tabular}%
+  }
+\end{table}
+
+\subsection{Training Configuration and Evaluation}
+
+Every setting in Table~\ref{tab:hyperparams} was held the same
+across the 2{,}000 runs of the primary sweep, so the activation
+pair is the only thing that changes between models. The
+architecture parameters (vocabulary, embedding, layer sizes,
+dropout) replicate Ahmed et al.~\cite{ahmed2025} exactly. The
+training parameters (optimizer, learning rate, batch size,
+scheduler, clipping) were chosen by us because Ahmed et al. did
+not report them. After training, accuracy, precision, recall, and
+F1-score were measured on the held-out 10,000-review test set.
+
+The early-learning follow-up of
+Section~\ref{sec:convergence_protocol} is a separate experiment
+and departs from this protocol in three documented respects.
+
+\subsection{Replication Protocol}
+\label{sec:replication}
+
+In the primary sweep, each of the $10\times10\times4 = 400$
+configurations was trained under five seeds,
+$\{10,20,30,40,50\}$ (Table~\ref{tab:hyperparams}), giving
+$2{,}000$ models. The seed is applied immediately before the
+model and its data loaders are constructed, setting
+\texttt{random}, \texttt{numpy}, \texttt{torch} and
+\texttt{torch.cuda}, with \texttt{cudnn.deterministic=True} and
+\texttt{cudnn.benchmark=False} to pin kernel selection as well.
+A given (pair, seed) is therefore exactly reproducible.
+
+The split is deliberately \emph{not} a function of the seed: it
+stays pinned at \texttt{random\_state=42}. The variance we report
+is therefore the variance of retraining the same model on the same
+data. That is the quantity a single-run comparison assumes to be
+negligible. Split variance would only inflate it, so these
+estimates are conservative.
+
+Runs were executed five at a time, one worker per seed. Each
+worker is a separate process with its own RNG and deterministic
+kernel selection, so concurrency cannot perturb a result; we
+confirmed this by re-running sampled configurations serially and
+recovering identical metrics.
+
+\begin{table}[htbp]
+  \caption{Shared Hyperparameter Configuration}
+  \label{tab:hyperparams}
+  \centering\footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.05}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lll}
+    \toprule
+    Hyperparameter & Value & Source \\
+    \midrule
+    Vocab / Seq.\ length / Embed. & 5{,}000 / 200 / 128 & \cite{ahmed2025} \\
+    RNN Layer 1 / Layer 2 units   & 64 / 32 per direction & \cite{ahmed2025} \\
+    Dense Layer 1 / Layer 2 units & 64 / 32 & \cite{ahmed2025} \\
+    Dropout rate                  & 0.4 & \cite{ahmed2025} \\
+    Batch size / Max epochs       & 64 / 10 & Ours \\
+    Early stopping patience       & 3 epochs (val.\ loss) & Ours \\
+    Optimiser                     & Adam, $\text{lr}=10^{-3}$ & Ours \\
+    LR scheduler                  & ReduceLROnPlateau ($\times$0.5) & Ours \\
+    Loss / Gradient clipping      & BCEWithLogitsLoss / $L_2\leq1.0$ & Ours \\
+    Weight initialisation         & Kaiming uniform (Linear) & PyTorch default \\
+    Data split seed               & 42, fixed for all runs & Ours \\
+    Training seeds (sweep)        & 10, 20, 30, 40, 50 & Ours \\
+    Training seeds (follow-up)    & Sec.~\ref{sec:convergence_protocol} & Ours \\
+    \bottomrule
+  \end{tabular}%
+  }
+\end{table}
+
+\subsection{Early-Learning Follow-Up Protocol}
+\label{sec:convergence_protocol}
+
+The early-learning experiment reported in
+Section~\ref{sec:learning} is a separate, smaller study. It does
+not inherit the primary sweep's protocol, and we state the
+differences here because two of them affect how its numbers
+should be read.
+
+\textit{Scope.} It trains BiGRU+GRU only, and only the ten
+configurations that use the same function in both dense layers
+(X+X), rather than all 100 ordered pairs. The dataset, split,
+vocabulary, architecture sizes, optimiser, scheduler, batch size,
+maximum epochs and early-stopping rule are all as in
+Table~\ref{tab:hyperparams}.
+
+\textit{Measurement.} It records validation loss and validation
+accuracy after every epoch. The test set is never touched. Its
+accuracies are therefore validation accuracies on the held-out
+10\% of the training split, and are not comparable with the test
+accuracies reported elsewhere in this paper.
+
+\textit{Seeding.} This experiment sets \texttt{torch.manual\_seed}
+and \texttt{numpy.random.seed} only, and leaves the cuDNN flags at
+their library defaults. The narrower scope is deliberate: it keeps
+these runs bit-compatible with the earlier single-seed convergence
+result, and enabling \texttt{cudnn.deterministic} changes the
+numerics enough to flip epoch-one outcomes. That sensitivity is
+itself informative. Epoch one sits close to a threshold, in which
+a model either leaves the chance-level plateau within one pass or
+does not, so small numerical differences can decide the epoch-one
+figure while leaving later epochs unaffected. These runs are
+reproducible on a fixed machine and library version, but we do not
+claim reproducibility across different cuDNN kernel selections.
+
+\textit{Seed sets.} The follow-up was run twice, under two
+disjoint five-seed sets, $\{42,0,1,2,3\}$ and
+$\{10,20,30,40,50\}$, for 100 runs in total. The first set
+contains seed 42, which is also the seed of the single-run
+ranking it is compared against, so on its own it cannot serve as
+an independent check of that ranking. The second set shares no
+seed with the first and matches the seeds of the primary sweep,
+which allows the epoch-one ranking to be tested on runs that have
+no seed in common with those used to establish it.
+
+\subsection{On Reproducing the Baseline of Ahmed et al.}
+\label{sec:baseline_repro}
+
+Ahmed et al.~\cite{ahmed2025} describe their architecture in full
+and we copy it exactly, but they do not report how they trained
+it: optimizer, learning rate, batch size, epochs, early stopping,
+seed and data split are all missing. Exact reproduction is
+therefore impossible, and we adopt the fully documented settings of
+Table~\ref{tab:hyperparams} instead.
+
+Replication sharpens what can be said about their 88.40\%. Our best
+configuration averages 87.81\% (Table~\ref{tab:top_configs})
+with a 95\% upper bound of 88.01\%,
+and no run among the 2{,}000 reached 88.40\% (maximum 88.39\%), so
+the benchmark sits outside the interval of our strongest setting.
+Since they report a single run without a seed or standard
+deviation, and we measure the per-cell standard deviation of this
+model family at 0.38 points, their figure is best read as one draw
+of unknown uncertainty. We treat it as a reference point, not a
+target.

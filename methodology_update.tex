@@ -1,0 +1,117 @@
+% ============================================================================
+% METHODOLOGY UPDATE -- brings Section III in line with the two experiments
+% actually reported in Section IV.
+%
+% Four edits, marked EDIT 1..4. Each gives the text to replace and the text
+% to replace it with. Nothing outside the Methodology section changes.
+%
+% WHY: the Methodology currently documents one protocol (the 2,000-run sweep,
+% seeds 10/20/30/40/50, cudnn.deterministic=True). Section IV-F reports a
+% second experiment run under a different seed set and a different seeding
+% scope, which the Methodology never describes and, in two places, actively
+% contradicts.
+% ============================================================================
+
+
+% ---------------------------------------------------------------------------
+% EDIT 1 -- Training Configuration and Evaluation
+% Scope the "all runs" claim to the primary sweep.
+%
+% REPLACE:
+%   Every setting in Table~\ref{tab:hyperparams} was held the
+%   same across all runs, so the activation pair is the only
+%   thing that changes between models.
+%
+% WITH:
+% ---------------------------------------------------------------------------
+
+Every setting in Table~\ref{tab:hyperparams} was held the same
+across the 2{,}000 runs of the primary sweep, so the activation
+pair is the only thing that changes between models. The
+early-learning follow-up of Section~\ref{sec:convergence_protocol}
+departs from this in three documented respects.
+
+
+% ---------------------------------------------------------------------------
+% EDIT 2 -- Replication Protocol
+% Name the sweep, and record cudnn.benchmark, which the follow-up differs on.
+%
+% REPLACE the first paragraph of \subsection{Replication Protocol}
+% ("Each of the $10\times10\times4 = 400$ configurations ... exactly
+% reproducible.") WITH:
+% ---------------------------------------------------------------------------
+
+In the primary sweep, each of the $10\times10\times4 = 400$
+configurations was trained under five seeds,
+$\{10,20,30,40,50\}$ (Table~\ref{tab:hyperparams}), giving
+$2{,}000$ models. The seed is applied immediately before the
+model and its data loaders are constructed, setting
+\texttt{random}, \texttt{numpy}, \texttt{torch} and
+\texttt{torch.cuda}, with \texttt{cudnn.deterministic=True} and
+\texttt{cudnn.benchmark=False} to pin kernel selection as well.
+A given (pair, seed) is therefore exactly reproducible.
+
+
+% ---------------------------------------------------------------------------
+% EDIT 3 -- NEW subsection.
+% INSERT immediately after \subsection{Replication Protocol} and before
+% \subsection{On Reproducing the Baseline of Ahmed et al.}
+% ---------------------------------------------------------------------------
+
+\subsection{Early-Learning Follow-Up Protocol}
+\label{sec:convergence_protocol}
+
+The early-learning experiment reported in
+Section~\ref{sec:learning} is a separate, smaller study. It does
+not inherit the primary sweep's protocol, and we state the
+differences here because two of them affect how its numbers
+should be read.
+
+\textit{Scope.} It trains BiGRU+GRU only, and only the ten
+configurations that use the same function in both dense layers
+(X+X), rather than all 100 ordered pairs. The dataset, split,
+vocabulary, architecture sizes, optimiser, scheduler, batch size,
+maximum epochs and early-stopping rule are all as in
+Table~\ref{tab:hyperparams}.
+
+\textit{Measurement.} It records validation loss and validation
+accuracy after every epoch. The test set is never touched. Its
+accuracies are therefore validation accuracies on the held-out
+10\% of the training split, and are not comparable with the test
+accuracies reported elsewhere in this paper.
+
+\textit{Seeding.} This experiment sets \texttt{torch.manual\_seed}
+and \texttt{numpy.random.seed} only, and leaves the cuDNN flags at
+their library defaults. The narrower scope is deliberate: it keeps
+the runs bit-compatible with the earlier single-seed convergence
+result, and enabling \texttt{cudnn.deterministic} changes the
+numerics enough to flip epoch-one outcomes. That sensitivity is
+itself a finding. Epoch one is close to a threshold, in which a
+model either leaves the chance-level plateau within one pass or
+does not, so small numerical differences can decide the epoch-one
+figure while leaving later epochs unaffected. These runs are
+reproducible on a fixed machine and library version, but we do not
+claim reproducibility across different cuDNN kernel selections.
+
+\textit{Seed sets.} The follow-up was run twice, under two
+disjoint five-seed sets: $\{42,0,1,2,3\}$ and
+$\{10,20,30,40,50\}$, for 100 runs in total. The first set
+contains seed 42, which is also the seed of the single-run
+ranking it is compared against, so on its own it cannot serve as
+an independent check of that ranking. The second set shares no
+seed with the first and matches the seeds of the primary sweep,
+which allows the epoch-one ranking to be tested on runs that have
+no seed in common with those used to establish it.
+
+
+% ---------------------------------------------------------------------------
+% EDIT 4 -- Table~\ref{tab:hyperparams}
+%
+% REPLACE the row:
+%   Training seeds                & 10, 20, 30, 40, 50 & Ours \\
+%
+% WITH the two rows:
+% ---------------------------------------------------------------------------
+
+    Training seeds (primary sweep) & 10, 20, 30, 40, 50 & Ours \\
+    Training seeds (follow-up)    & $\{42,0,1,2,3\}$, $\{10,\ldots,50\}$ & Ours \\
