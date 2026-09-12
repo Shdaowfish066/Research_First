@@ -1,0 +1,5 @@
+architecture,second_layer,readout,runs,escaped,at_chance,exactly_50,mean_accuracy,sd_accuracy,min_accuracy,max_accuracy
+BiLSTM+LSTM,unidirectional,h[-1] (forward only),50,5,41,23,54.79,11.4,49.97,89.71
+BiGRU+GRU,unidirectional,h[-1] (forward only),50,16,33,7,63.29,18.78,49.88,90.79
+BiLSTM+BiLSTM,bidirectional,"cat(h[0] fwd, h[1] bwd)",50,50,0,0,90.14,0.43,89.13,91.04
+BiGRU+BiGRU,bidirectional,"cat(h[0] fwd, h[1] bwd)",50,50,0,0,90.6,0.24,90.06,91.33

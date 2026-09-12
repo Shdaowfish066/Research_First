@@ -1,0 +1,48 @@
+{
+  "experiment": "IMDb top-10 activation pairs on Amazon Polarity",
+  "padding": "right",
+  "pairs": [
+    "ReLU+GELU",
+    "ReLU+ReLU",
+    "ReLU+Tanh",
+    "LeakyReLU+GELU",
+    "GELU+ELU",
+    "LeakyReLU+Mish",
+    "PReLU+ReLU",
+    "LeakyReLU+ReLU",
+    "PReLU+SiLU",
+    "ReLU+Hardswish"
+  ],
+  "pair_source": "amazon_polarity_sweep.TOP10 (imported, not re-ranked)",
+  "pair_provenance": "top 10 by mean test accuracy over 4 archs x 5 seeds in results/master_2000_runs.csv",
+  "architectures": [
+    "BiLSTM+LSTM",
+    "BiGRU+GRU",
+    "BiLSTM+BiLSTM",
+    "BiGRU+BiGRU"
+  ],
+  "seeds": [
+    10,
+    20,
+    30,
+    40,
+    50
+  ],
+  "expected_runs": 200,
+  "corpus": "mteb/amazon_polarity @ e2d317d38cd51312af73b3d32a06d1a08b442046",
+  "subsample": 50000,
+  "split_state": 42,
+  "vocab_size": 5000,
+  "max_len": 200,
+  "pad_idx": 0,
+  "unk_idx": 1,
+  "batch_size": 64,
+  "epochs": 10,
+  "learning_rate": 0.001,
+  "dropout": 0.4,
+  "patience_stop": 3,
+  "val_split": 0.1,
+  "cache_dir": "cache\\amazon_test_top_10_rightpad",
+  "cache_fingerprint": "b6d3df82d6f524dd",
+  "expectation": "near-chance (~50%, loss ~0.6931) is the predicted outcome under right-padding on this corpus and is reported as measured, not corrected"
+}

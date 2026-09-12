@@ -1,0 +1,13 @@
+{
+  "total_runs": 200,
+  "unique_combinations": 200,
+  "expected": 200,
+  "complete": true,
+  "runs_at_chance": 74,
+  "runs_escaped": 121,
+  "runs_exactly_50": 30,
+  "spearman_rho_vs_imdb": -0.0788,
+  "spearman_p_vs_imdb": 0.8287,
+  "amazon_mean_accuracy": 74.7,
+  "imdb_mean_accuracy": 87.26
+}

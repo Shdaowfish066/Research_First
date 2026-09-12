@@ -1,0 +1,22 @@
+Amazon content tokens: median 71, trailing PAD median 129
+IMDb   content tokens: median 176, trailing PAD median 24
+
+A  Amazon, post-pad 200 (as run)
+  amazon post-pad 200          epoch 1  val_loss 0.6932  val_acc 49.83%
+  amazon post-pad 200          epoch 2  val_loss 0.6931  val_acc 50.22%
+  amazon post-pad 200          epoch 3  val_loss 0.6931  val_acc 49.83%
+
+B  Amazon, LEFT-pad 200
+  amazon left-pad 200          epoch 1  val_loss 0.2715  val_acc 88.83%
+  amazon left-pad 200          epoch 2  val_loss 0.2232  val_acc 90.25%
+  amazon left-pad 200          epoch 3  val_loss 0.2149  val_acc 90.75%
+
+C  Amazon, post-pad 100
+  amazon post-pad 100          epoch 1  val_loss 0.5708  val_acc 71.38%
+  amazon post-pad 100          epoch 2  val_loss 0.2610  val_acc 88.75%
+  amazon post-pad 100          epoch 3  val_loss 0.2435  val_acc 90.20%
+
+D  IMDb, post-pad 200 (control)
+  imdb post-pad 200            epoch 1  val_loss 0.6561  val_acc 60.92%
+  imdb post-pad 200            epoch 2  val_loss 0.3119  val_acc 86.67%
+  imdb post-pad 200            epoch 3  val_loss 0.3017  val_acc 86.72%

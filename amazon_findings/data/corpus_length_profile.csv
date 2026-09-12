@@ -1,0 +1,8 @@
+corpus,source,median_tokens,pct_filling_200,median_trailing_pad
+IMDb (dataset/IMDB Dataset.csv),encoded cache,176,42.1,24
+Amazon Polarity (this study),encoded cache,71,0.1,129
+Amazon-2023 Movies_and_TV,streamed 3k sample,27,7.9,173
+Amazon-2023 Books,streamed 3k sample,70,24.5,130
+Amazon-2023 CDs_and_Vinyl,streamed 3k sample,68,27.0,132
+Amazon-2023 Kindle_Store,streamed 3k sample,58,11.0,142
+Amazon-2023 Video_Games,streamed 3k sample,44,11.9,156
